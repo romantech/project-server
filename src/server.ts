@@ -1,8 +1,10 @@
 import setupRoutes from './routes';
 import { createServer, errorHandler, notFoundHandler } from '@/config';
-import { PORT } from '@/config/environment';
+import { isProd, PORT } from '@/config/environment';
 
 const initServer = (): void => {
+  console.log('current port', PORT);
+  console.log('isProd', isProd());
   const app = createServer();
   setupRoutes(app);
 
