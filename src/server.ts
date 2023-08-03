@@ -1,5 +1,5 @@
 import setupRoutes from './routes';
-import { createServer, errorHandler, notFoundHandler } from './config';
+import { createServer, errorHandler, notFoundHandler } from '@/config';
 
 const PORT = process.env.PORT || 3001;
 
