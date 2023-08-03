@@ -2,13 +2,10 @@
   "name": "project-server",
   "version": "1.0.0",
   "description": "",
-  "_moduleAliases": {
-    "@": "dist"
-  },
   "main": "server.js",
   "scripts": {
     "dev": "nodemon",
-    "start": "node -r module-alias/register src/server.ts",
+    "start": "ts-node -r dotenv/config -r tsconfig-paths/register src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
