@@ -1,3 +1,4 @@
+import 'module-alias/register';
 import setupRoutes from './routes';
 import { createServer, errorHandler, notFoundHandler } from '@/config';
 import { PORT } from '@/config/environment';

@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "_moduleAliases": {
+    "@": "dist"
+  },
   "scripts": {
     "dev": "nodemon",
-    "start": "ts-node -r dotenv/config -r tsconfig-paths/register src/server.ts",
+    "start": "node -r module-alias/register dist/server.js",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -23,6 +27,7 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "helmet": "^7.0.0",
+    "module-alias": "^2.2.3",
     "morgan": "^1.10.0",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0"
