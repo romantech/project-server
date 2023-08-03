@@ -1,11 +1,18 @@
-import dotenv from 'dotenv';
-import { createServer } from './config/express';
+import setupRoutes from './routes';
+import { createServer, errorHandler, notFoundHandler } from './config';
 
-dotenv.config();
-
-const app = createServer();
 const PORT = process.env.PORT || 3001;
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
-});
+const initServer = (): void => {
+  const app = createServer();
+  setupRoutes(app);
+
+  app.use(notFoundHandler);
+  app.use(errorHandler);
+
+  app.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}`);
+  });
+};
+
+initServer();
