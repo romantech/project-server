@@ -4,8 +4,9 @@ import morgan from 'morgan';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import { isProd } from '@/config/environment';
 
-const morganFormat = process.env.NODE_ENV === 'production' ? 'tiny' : 'dev';
+const morganFormat = isProd() ? 'combined' : 'dev';
 
 const createServer = (): Application => {
   const app = express();
