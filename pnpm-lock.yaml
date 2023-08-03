@@ -64,6 +64,9 @@ devDependencies:
   eslint-plugin-prettier:
     specifier: ^5.0.0
     version: 5.0.0(eslint-config-prettier@8.10.0)(eslint@8.46.0)(prettier@3.0.1)
+  module-alias:
+    specifier: ^2.2.3
+    version: 2.2.3
   nodemon:
     specifier: ^3.0.1
     version: 3.0.1
@@ -1892,6 +1895,10 @@ packages:
 
   /minimist@1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
+    dev: true
+
+  /module-alias@2.2.3:
+    resolution: {integrity: sha512-23g5BFj4zdQL/b6tor7Ji+QY4pEfNH784BMslY9Qb0UnJWRAt+lQGLYmRaM0KDBwIG23ffEBELhZDP2rhi9f/Q==}
     dev: true
 
   /morgan@1.10.0:
