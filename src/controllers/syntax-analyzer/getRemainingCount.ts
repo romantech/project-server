@@ -15,19 +15,18 @@ export const getRemainingCount = async (
   res: Response,
 ) => {
   const fingerprint = req.query.fingerprint;
+  const total = Number(await redis.get(ANALYSIS_KEYS.TOTAL_COUNT));
 
-  if (!fingerprint) {
-    const totalCount = await redis.get(ANALYSIS_KEYS.TOTAL_COUNT);
-    return res.json({ count: totalCount });
-  }
+  if (!fingerprint) return res.json({ count: total });
 
   try {
-    const remainingCount = await redis.get(COUNT_BY_ID(fingerprint));
-    if (remainingCount) return res.json({ count: remainingCount });
+    const remaining = Number(await redis.get(COUNT_BY_ID(fingerprint)));
+    if (remaining) return res.json({ count: Math.min(remaining, total) });
 
-    await redis.set(COUNT_BY_ID(fingerprint), INIT_COUNT, 'EX', EXP_PERIOD);
+    const count = Math.min(INIT_COUNT, total);
+    await redis.set(COUNT_BY_ID(fingerprint), count, 'EX', EXP_PERIOD);
 
-    res.json({ count: INIT_COUNT });
+    res.json({ count });
   } catch (error) {
     console.error(error);
     let errorMessage = 'Error in getting remaining count';
