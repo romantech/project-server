@@ -1,5 +1,6 @@
-import setupRoutes from './routes';
-import { createServer, errorHandler, notFoundHandler, PORT } from 'src/config';
+import 'module-alias/register';
+import setupRoutes from '@/routes';
+import { createServer, errorHandler, notFoundHandler, PORT } from '@/config';
 
 const initServer = (): void => {
   const app = createServer();
