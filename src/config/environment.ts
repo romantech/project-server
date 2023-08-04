@@ -7,3 +7,6 @@ import { env } from 'node:process';
  * */
 export const isProd = () => env.NODE_ENV === 'production';
 export const PORT = isProd() ? env.PORT : 3001;
+export const REDIS_HOST = env.REDIS_HOST;
+export const REDIS_PORT = Number(env.REDIS_PORT);
+export const REDIS_PASSWORD = env.REDIS_PASSWORD;
