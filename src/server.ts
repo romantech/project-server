@@ -11,16 +11,13 @@ import { initRedis } from '@/db/initRedis';
  * src/config 경로로 작성하면 dist 폴더에서 모듈을 찾는게 아니어서 에러 발생하므로 주의
  * */
 
-const initServer = async () => {
+const initServer = () => {
   const app = createServer();
   app.locals.redis = redis;
 
-  try {
-    await initRedis(redis);
-    console.log('Redis has been successfully initialized');
-  } catch (err) {
-    console.error('Failed to initialize Redis:', err);
-  }
+  initRedis(redis)
+    .then(() => console.log('Redis has been successfully initialized'))
+    .catch((err) => console.error('Failed to initialize Redis:', err));
 
   setupRoutes(app);
 
