@@ -1,10 +1,10 @@
 import { Application } from 'express';
 import healthRouter from './health';
-import syntaxAnalyzerRouter from './syntax-analyzer';
+import analysisRouter from './analysis';
 
 const setupRoutes = (app: Application) => {
   app.use('/', healthRouter);
-  app.use('/syntax-analyzer', syntaxAnalyzerRouter);
+  app.use('/analysis', analysisRouter);
 };
 
 export default setupRoutes;

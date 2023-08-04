@@ -1,1 +1,1 @@
-export * as syntaxAnalyzerController from './syntax-analyzer';
+export * as analysisController from './analysis';
