@@ -1,9 +1,9 @@
-import 'module-alias/register';
 import setupRoutes from './routes';
 import { createServer, errorHandler, notFoundHandler } from '@/config';
 import { PORT } from '@/config/environment';
 
 const initServer = (): void => {
+  console.log('@@@', process.env.OPEN_AI_API_KEY);
   const app = createServer();
   setupRoutes(app);
 
