@@ -4,6 +4,7 @@ import { analysisPrompt, ERROR_MESSAGES } from '@/constants';
 import { asyncHandler, throwCustomError } from '@/utils';
 import {
   ANALYSIS_REDIS_KEYS,
+  GPT_MODELS,
   openai,
   OPENAI_SETTINGS,
   redis,
@@ -11,14 +12,12 @@ import {
 
 import { body, validationResult } from 'express-validator';
 
-type GPTModel = (typeof GPT_MODELS)[number];
 type RequestBody = {
   sentence: string[];
-  model: GPTModel;
+  model: (typeof GPT_MODELS)[number];
   fingerprint: string;
 };
 
-const GPT_MODELS = ['gpt-3.5-turbo', 'gpt-4'];
 const { ANALYSIS_INVALID_REQUEST, ANALYSIS_INVALID_MODEL } = ERROR_MESSAGES;
 const { TOTAL_COUNT, COUNT_BY_ID } = ANALYSIS_REDIS_KEYS;
 
