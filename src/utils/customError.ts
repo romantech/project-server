@@ -1,4 +1,4 @@
-import { ERROR_MESSAGES } from '@/utils/errorMessages';
+import { ERROR_MESSAGES } from '@/constants';
 
 export class CustomError extends Error {
   status: number;

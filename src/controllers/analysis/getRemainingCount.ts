@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
-import redis from '@/db/redisClient';
-import { ANALYSIS_REDIS_KEYS } from '@/utils/redisKeys';
-import { throwCustomError } from '@/utils/customError';
-import { asyncHandler } from '@/utils/asyncHandler';
-import { ERROR_MESSAGES } from '@/utils/errorMessages';
+
+import { ANALYSIS_REDIS_KEYS, redis } from '@/services';
+import { asyncHandler, throwCustomError } from '@/utils';
+import { ERROR_MESSAGES } from '@/constants';
 
 interface QueryString {
   fingerprint?: string;

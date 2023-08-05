@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import requestIP from 'request-ip';
 
-const router = Router();
+const healthRouter = Router();
 
-router.get(['/', '/health'], (req, res, next) => {
+healthRouter.get(['/', '/health'], (req, res, next) => {
   try {
     const request_ip = requestIP.getClientIp(req);
 
@@ -19,4 +19,4 @@ router.get(['/', '/health'], (req, res, next) => {
   }
 });
 
-export default router;
+export { healthRouter };

@@ -1,12 +1,15 @@
 import { Request, Response } from 'express';
-import { asyncHandler } from '@/utils/asyncHandler';
-import redis from '@/db/redisClient';
-import { analysisPrompt } from '@/utils/analysisPrompt';
-import { throwCustomError } from '@/utils/customError';
-import { openai } from '@/config/openai';
-import { ERROR_MESSAGES } from '@/utils/errorMessages';
+
+import { analysisPrompt, ERROR_MESSAGES } from '@/constants';
+import { asyncHandler, throwCustomError } from '@/utils';
+import {
+  ANALYSIS_REDIS_KEYS,
+  openai,
+  OPENAI_SETTINGS,
+  redis,
+} from '@/services';
+
 import { body, validationResult } from 'express-validator';
-import { ANALYSIS_REDIS_KEYS } from '@/utils/redisKeys';
 
 type GPTModel = (typeof GPT_MODELS)[number];
 type RequestBody = {
@@ -49,7 +52,7 @@ export const createAnalysis = [
         { role: 'system', content: analysisPrompt },
         { role: 'user', content: JSON.stringify(sentence) },
       ],
-      temperature: 0.4,
+      ...OPENAI_SETTINGS,
     });
 
     if (!completion) throwCustomError('Error with OpenAI API request');

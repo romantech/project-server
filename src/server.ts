@@ -1,7 +1,6 @@
-import setupRoutes from '@/routes';
+import { setupRoutes } from '@/routes';
 import { createServer, errorHandler, notFoundHandler, PORT } from '@/config';
-import redis from '@/db/redisClient';
-import { initRedis } from '@/db/initRedis';
+import { initRedisKeys, redis } from '@/services';
 
 /**
  * 배포 환경에선 빌드(ts -> js 파일로 트랜스파일) 후 모든 js 파일이 dist 폴더에 저장됨
@@ -15,7 +14,7 @@ const initServer = () => {
   const app = createServer();
   app.locals.redis = redis;
 
-  initRedis(redis)
+  initRedisKeys(redis)
     .then(() => console.log('Redis has been successfully initialized'))
     .catch((err) => console.error('Failed to initialize Redis:', err));
 

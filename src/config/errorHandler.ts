@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { CustomError } from '@/utils/customError';
-import { ERROR_MESSAGES } from '@/utils/errorMessages';
+import { CustomError } from '@/utils';
+import { ERROR_MESSAGES } from '@/constants';
 
 const { SERVER_ERROR } = ERROR_MESSAGES;
 /* next 파라미터(4번째)가 없으면 에러처리 미들웨어 인식하지 않으므로 주의 */
