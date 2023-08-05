@@ -3,15 +3,20 @@ import requestIP from 'request-ip';
 
 const router = Router();
 
-router.get(['/', '/health'], (req, res) => {
-  const client_ip = requestIP.getClientIp(req);
-  const healthCheck = {
-    uptime: process.uptime(),
-    message: 'Server is up and running',
-    timestamp: Date.now(),
-    status: 'OK',
-    client_ip,
-  };
-  res.send(healthCheck);
+router.get(['/', '/health'], (req, res, next) => {
+  try {
+    const request_ip = requestIP.getClientIp(req);
+
+    res.send({
+      uptime: process.uptime(),
+      message: 'Server is up and running',
+      timestamp: Date.now(),
+      status: 'OK',
+      request_ip,
+    });
+  } catch (error) {
+    next(error);
+  }
 });
+
 export default router;
