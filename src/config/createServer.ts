@@ -8,7 +8,7 @@ import { isProd } from '@/config/environment';
 
 const morganFormat = isProd() ? 'combined' : 'dev';
 
-const createServer = (): Application => {
+export const createServer = (): Application => {
   const app = express();
 
   app.use(cors());
@@ -24,5 +24,3 @@ const createServer = (): Application => {
 
   return app;
 };
-
-export default createServer;
