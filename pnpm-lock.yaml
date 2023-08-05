@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@types/ip':
+    specifier: ^1.1.0
+    version: 1.1.0
   compression:
     specifier: ^1.7.4
     version: 1.7.4
@@ -23,6 +26,9 @@ dependencies:
   ioredis:
     specifier: ^5.3.2
     version: 5.3.2
+  ip:
+    specifier: ^1.1.8
+    version: 1.1.8
   module-alias:
     specifier: ^2.2.3
     version: 2.2.3
@@ -43,9 +49,6 @@ devDependencies:
   '@types/express':
     specifier: ^4.17.17
     version: 4.17.17
-  '@types/ip':
-    specifier: ^1.1.0
-    version: 1.1.0
   '@types/module-alias':
     specifier: ^2.0.1
     version: 2.0.1
@@ -76,9 +79,6 @@ devDependencies:
   eslint-plugin-prettier:
     specifier: ^5.0.0
     version: 5.0.0(eslint-config-prettier@8.10.0)(eslint@8.46.0)(prettier@3.0.1)
-  ip:
-    specifier: ^1.1.8
-    version: 1.1.8
   prettier:
     specifier: ^3.0.1
     version: 3.0.1
@@ -289,7 +289,7 @@ packages:
     resolution: {integrity: sha512-dwNe8gOoF70VdL6WJBwVHtQmAX4RMd62M+mAB9HQFjG1/qiCLM/meRy95Pd14FYBbEDwCq7jgJs89cHpLBu4HQ==}
     dependencies:
       '@types/node': 20.4.6
-    dev: true
+    dev: false
 
   /@types/json-schema@7.0.12:
     resolution: {integrity: sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==}
@@ -319,7 +319,6 @@ packages:
 
   /@types/node@20.4.6:
     resolution: {integrity: sha512-q0RkvNgMweWWIvSMDiXhflGUKMdIxBo2M2tYM/0kEGDueQByFzK4KZAgu5YHGFNxziTlppNpTIBcqHQAxlfHdA==}
-    dev: true
 
   /@types/qs@6.9.7:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
@@ -1653,7 +1652,7 @@ packages:
 
   /ip@1.1.8:
     resolution: {integrity: sha512-PuExPYUiu6qMBQb4l06ecm6T6ujzhmh+MeJcW9wa89PoAz5pvd4zPgN5WJV104mb6S2T1AwNIAaB70JNrLQWhg==}
-    dev: true
+    dev: false
 
   /ipaddr.js@1.9.1:
     resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==}
