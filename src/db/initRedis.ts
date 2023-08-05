@@ -1,7 +1,7 @@
 import Redis from 'ioredis';
-import { ANALYSIS_KEYS } from '@/utils/redisKeys';
+import { ANALYSIS_REDIS_KEYS } from '@/utils/redisKeys';
 
-const { TOTAL_COUNT } = ANALYSIS_KEYS;
+const { TOTAL_COUNT } = ANALYSIS_REDIS_KEYS;
 const INIT_COUNT = 50;
 const EXP_PERIOD = 24 * 60 * 60;
 

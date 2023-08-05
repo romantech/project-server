@@ -1,10 +1,8 @@
-import { Request, Response } from 'express';
+import { CustomError } from '@/utils/customError';
+import { ERROR_MESSAGES } from '@/utils/errorMessages';
 
-const notFoundHandler = (req: Request, res: Response) => {
-  res.status(404).json({
-    status: 'error',
-    message: `The requested resource '${req.originalUrl}' was not found on this server. Please check your request URL and try again.`,
-  });
+const notFoundHandler = () => {
+  throw new CustomError(404, ERROR_MESSAGES.NOT_FOUND);
 };
 
 export default notFoundHandler;
