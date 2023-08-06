@@ -1,14 +1,12 @@
 import Redis from 'ioredis';
 import {
   isProd,
+  logger,
   REDIS_HOST,
   REDIS_PASSWORD,
   REDIS_PORT,
   REDIS_USERNAME,
 } from '@/config';
-import { COLORS } from '@/constants';
-
-const { success, failed } = COLORS;
 
 export const redis = new Redis({
   host: REDIS_HOST,
@@ -20,13 +18,13 @@ export const redis = new Redis({
 redis.on('connect', () => {
   const suffix = isProd() ? 'prod' : 'dev';
   redis.client('SETNAME', `project-server-${suffix}`);
-  console.log(success, 'Successfully connected to Redis');
+  logger.info('Successfully connected to Redis');
 });
 
 redis.on('ready', () => {
-  console.log(success, 'Redis is ready for use');
+  logger.info('Redis is ready for use');
 });
 
 redis.on('error', (error) => {
-  console.error(failed, 'Error connecting to Redis:', error);
+  logger.error('Error connecting to Redis:', error);
 });

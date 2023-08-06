@@ -1,11 +1,8 @@
 import { setupRoutes } from '@/routes';
-import { createServer, PORT } from '@/config';
+import { createServer, logger, PORT } from '@/config';
 import { initRedisKeys, redis } from '@/services';
 import { errorHandler, notFoundHandler } from '@/middlewares';
-import { COLORS } from '@/constants';
 import { initSchedulers } from '@/schedulers';
-
-const { success, failed } = COLORS;
 
 /**
  * 배포 환경에선 빌드(ts -> js 파일로 트랜스파일) 후 모든 js 파일이 dist 폴더에 저장됨
@@ -20,10 +17,10 @@ const initServer = async () => {
 
   try {
     await initRedisKeys(redis);
-    console.log(success, 'Redis has been successfully initialized');
+    logger.info('Redis has been successfully initialized');
     initSchedulers();
   } catch (err) {
-    console.error(failed, 'Failed to initialize Redis:', err);
+    logger.error('Failed to initialize Redis:', err);
   }
 
   setupRoutes(app);
@@ -32,7 +29,7 @@ const initServer = async () => {
   app.use(errorHandler);
 
   app.listen(PORT, () => {
-    console.log(success, `Server is running on port ${PORT}`);
+    logger.info(`Server is running on port ${PORT}`);
   });
 };
 
