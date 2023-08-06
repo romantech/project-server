@@ -48,7 +48,7 @@ export const createAnalysis = [
       const decValue = model === 'gpt-4' ? 3 : 1;
       await redis.decrby(TOTAL_COUNT, decValue);
       await redis.decrby(COUNT_BY_ID(fingerprint), decValue);
-      res.json({ result: completion.data.choices[0] });
+      res.json(completion.data.choices[0].message?.content);
     } catch (err) {
       // @ts-expect-error openai error response
       const { response } = err;
