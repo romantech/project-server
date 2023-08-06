@@ -14,24 +14,26 @@ const { success, failed } = COLORS;
  * 즉, 모든 import 구문의 @ 경로는 dist 폴더로 변환됨 e.g. @/config -> dist/config
  * src/config 경로로 작성하면 dist 폴더에서 모듈을 찾는게 아니어서 에러 발생하므로 주의
  * */
-const initServer = () => {
+const initServer = async () => {
   const app = createServer();
   app.locals.redis = redis;
 
-  initRedisKeys(redis)
-    .then(() => console.log(success, 'Redis has been successfully initialized'))
-    .catch((err) => console.error(failed, 'Failed to initialize Redis:', err));
+  try {
+    await initRedisKeys(redis);
+    console.log(success, 'Redis has been successfully initialized');
+    initSchedulers();
+  } catch (err) {
+    console.error(failed, 'Failed to initialize Redis:', err);
+  }
 
   setupRoutes(app);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
 
-  initSchedulers();
-
   app.listen(PORT, () => {
     console.log(success, `Server is running on port ${PORT}`);
   });
 };
 
-initServer();
+(async () => initServer())();
