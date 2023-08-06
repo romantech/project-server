@@ -10,4 +10,5 @@ export const PORT = isProd() ? env.PORT : 3001;
 export const REDIS_HOST = env.REDIS_HOST;
 export const REDIS_PORT = Number(env.REDIS_PORT);
 export const REDIS_PASSWORD = env.REDIS_PASSWORD;
+export const REDIS_USERNAME = env.REDIS_USERNAME;
 export const OPENAI_API_KEY = env.OPENAI_API_KEY;
