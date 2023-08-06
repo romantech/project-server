@@ -29,12 +29,14 @@ export const getRemainingCount = asyncHandler(
     if (!fingerprint) return res.json({ count: total });
 
     const key = COUNT_BY_ID(fingerprint);
-    const remaining = Number(await redis.get(key));
-    if (remaining) return res.json({ count: Math.min(remaining, total) });
+    const remaining = await redis.get(key);
 
-    const count = Math.min(ANALYSIS_INIT_COUNT, total);
-    await redis.set(key, count, 'EX', ANALYSIS_KEY_EXP);
+    if (remaining === null) {
+      const count = Math.min(ANALYSIS_INIT_COUNT, total);
+      await redis.set(key, count, 'EX', ANALYSIS_KEY_EXP);
+      return res.json({ count });
+    }
 
-    res.json({ count });
+    res.json({ count: Math.min(+remaining, total) });
   },
 );
