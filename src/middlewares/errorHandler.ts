@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { CustomError } from '@/utils';
-import { ERROR_MESSAGES } from '@/constants';
+import { COLORS, ERROR_MESSAGES } from '@/constants';
 
 const { SERVER_ERROR } = ERROR_MESSAGES;
 /* next 파라미터(4번째)가 없으면 에러처리 미들웨어 인식하지 않으므로 주의 */
@@ -14,7 +14,7 @@ export const errorHandler = (
   const status = isCustomError ? err.status : 500;
   const message = isCustomError ? err.message : SERVER_ERROR;
 
-  console.error({
+  console.error(COLORS.failed, 'Error Caught in Request Handler: ', {
     message: err.message,
     stack: err.stack,
     timestamp: new Date(),

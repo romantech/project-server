@@ -6,6 +6,9 @@ import {
   REDIS_PORT,
   REDIS_USERNAME,
 } from '@/config';
+import { COLORS } from '@/constants';
+
+const { success, failed } = COLORS;
 
 export const redis = new Redis({
   host: REDIS_HOST,
@@ -17,13 +20,13 @@ export const redis = new Redis({
 redis.on('connect', () => {
   const suffix = isProd() ? 'prod' : 'dev';
   redis.client('SETNAME', `project-server-${suffix}`);
-  console.log('Successfully connected to Redis');
+  console.log(success, 'Successfully connected to Redis');
 });
 
 redis.on('ready', () => {
-  console.log('Redis is ready for use');
+  console.log(success, 'Redis is ready for use');
 });
 
 redis.on('error', (error) => {
-  console.error('Error connecting to Redis:', error);
+  console.error(failed, 'Error connecting to Redis:', error);
 });
