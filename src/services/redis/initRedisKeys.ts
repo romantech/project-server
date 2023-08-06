@@ -1,7 +1,7 @@
 import Redis from 'ioredis';
 import { ANALYSIS_REDIS_KEYS } from '@/services';
 
-const INIT_COUNT = 50;
+export const INIT_TOTAL_COUNT = 50;
 const EXP_PERIOD = 24 * 60 * 60;
 
 export const initRedisKeys = async (redisClient: Redis) => {
@@ -10,7 +10,7 @@ export const initRedisKeys = async (redisClient: Redis) => {
     const totalCount = await redisClient.get(TOTAL_COUNT);
 
     if (totalCount === null) {
-      await redisClient.set(TOTAL_COUNT, INIT_COUNT, 'EX', EXP_PERIOD);
+      await redisClient.set(TOTAL_COUNT, INIT_TOTAL_COUNT, 'EX', EXP_PERIOD);
     }
   };
 

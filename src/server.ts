@@ -3,6 +3,7 @@ import { createServer, PORT } from '@/config';
 import { initRedisKeys, redis } from '@/services';
 import { errorHandler, notFoundHandler } from '@/middlewares';
 import { COLORS } from '@/constants';
+import { initSchedulers } from '@/schedulers';
 
 const { success, failed } = COLORS;
 
@@ -25,6 +26,8 @@ const initServer = () => {
 
   app.use(notFoundHandler);
   app.use(errorHandler);
+
+  initSchedulers();
 
   app.listen(PORT, () => {
     console.log(success, `Server is running on port ${PORT}`);
