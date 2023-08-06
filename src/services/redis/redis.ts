@@ -1,5 +1,6 @@
 import Redis from 'ioredis';
 import {
+  isProd,
   REDIS_HOST,
   REDIS_PASSWORD,
   REDIS_PORT,
@@ -14,6 +15,8 @@ export const redis = new Redis({
 });
 
 redis.on('connect', () => {
+  const suffix = isProd() ? 'prod' : 'dev';
+  redis.client('SETNAME', `project-server-${suffix}`);
   console.log('Successfully connected to Redis');
 });
 
