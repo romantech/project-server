@@ -11,7 +11,7 @@ import {
 } from '@/services';
 
 import { validationResult } from 'express-validator';
-import { checkFingerprint, checkSentence } from '@/validators';
+import { checkFingerprint, checkModel, checkSentence } from '@/validators';
 import { validateAnalysisCount } from '@/middlewares';
 
 type RequestBody = {
@@ -24,7 +24,7 @@ const { TOTAL_COUNT, COUNT_BY_ID } = ANALYSIS_REDIS_KEYS;
 
 export const createAnalysis = [
   checkSentence,
-  // checkModel,
+  checkModel,
   checkFingerprint,
   asyncHandler(async (req: Request, res: Response) => {
     const errors = validationResult(req);

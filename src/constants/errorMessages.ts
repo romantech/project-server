@@ -6,5 +6,5 @@ export const ERROR_MESSAGES = {
   ANALYSIS_INVALID_REQUEST: (fields: string[]) =>
     `${fields.join(', ')} field(s) is(are) required in request body`,
   ANALYSIS_INVALID_MODEL: (validValues: string[]) =>
-    `Invalid model value. Allowed values are '${validValues.join("', '")}'`,
+    `Invalid model value. Allowed values are '${validValues.join(', ')}'`,
 } as const;
