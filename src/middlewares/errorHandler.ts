@@ -17,12 +17,11 @@ export const errorHandler = (
 
   logger.error('Error Caught in Request Handler', {
     error_message: err.message,
-    stack: err.stack,
-    timestamp: new Date().toISOString(),
     path: req.path,
     method: req.method,
     headers: req.headers,
     body: req.body,
+    stack: err.stack,
   });
 
   res.status(status).json({ status: 'error', message });

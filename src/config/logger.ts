@@ -9,6 +9,8 @@ const { combine, timestamp, colorize, printf, prettyPrint } = format;
 const logDir = path.join(cwd(), 'logs');
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
+const ignorePrivate = format((info) => (info.private ? false : info));
+
 /**
  * Custom logging format
  */
@@ -55,6 +57,7 @@ const dailyRotateFileConfig = (
 
 export const logger = createLogger({
   format: combine(
+    ignorePrivate(),
     uppercaseLevel(),
     timestamp({ format: DATE_FORMAT }),
     customFormat,
