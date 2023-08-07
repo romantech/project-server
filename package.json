@@ -10,7 +10,8 @@
     "start:dev": "tsnd -r dotenv/config -r tsconfig-paths/register --respawn --transpile-only src/server.ts",
     "start": "node -r module-alias/register dist/server.js",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "type-check": "tsc --noEmit"
   },
   "keywords": [],
   "author": "Romantech",
