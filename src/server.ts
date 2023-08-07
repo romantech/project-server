@@ -3,6 +3,7 @@ import { createServer, logger, PORT } from '@/config';
 import { initRedisKeys, redis } from '@/services';
 import { errorHandler, notFoundHandler } from '@/middlewares';
 import { initSchedulers } from '@/schedulers';
+import { checkEnvVariables } from '@/utils';
 
 /**
  * 배포 환경에선 빌드(ts -> js 파일로 트랜스파일) 후 모든 js 파일이 dist 폴더에 저장됨
@@ -12,6 +13,8 @@ import { initSchedulers } from '@/schedulers';
  * src/config 경로로 작성하면 dist 폴더에서 모듈을 찾는게 아니어서 에러 발생하므로 주의
  * */
 const initServer = async () => {
+  checkEnvVariables();
+
   const app = createServer();
   app.locals.redis = redis;
 
