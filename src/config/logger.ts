@@ -5,15 +5,13 @@ import winstonDaily, {
 import path from 'node:path';
 import { cwd } from 'node:process';
 
-const { combine, timestamp, colorize, printf, prettyPrint } = format;
+const { combine, timestamp, colorize, printf } = format;
 const logDir = path.join(cwd(), 'logs');
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
 const ignorePrivate = format((info) => (info.private ? false : info));
 
-/**
- * Custom logging format
- */
+/** Custom logging format */
 const customFormat = printf(({ level, message, timestamp, ...meta }) => {
   let result = `[${level}] ${timestamp}: ${message}`;
   if (Object.keys(meta).length) {
@@ -22,9 +20,7 @@ const customFormat = printf(({ level, message, timestamp, ...meta }) => {
   return result;
 });
 
-/**
- * Transform log level to uppercase
- */
+/** Transform log level to uppercase */
 const uppercaseLevel = format((info) => {
   info.level = info.level.toUpperCase();
   return info;
@@ -39,9 +35,7 @@ type LogLevel =
   | 'debug'
   | 'silly';
 
-/**
- * Generate configuration for daily rotating files based on level and filename
- */
+/** Generate configuration for daily rotating files based on level and filename */
 const dailyRotateFileConfig = (
   level: LogLevel,
   filename: string,
