@@ -1,6 +1,5 @@
 import { body } from 'express-validator';
-import { GPT_MODELS } from '@/services';
-import { ERROR_MESSAGES } from '@/constants';
+import { ERROR_MESSAGES, GPT_MODELS } from '@/constants';
 
 const { ANALYSIS_MISSING_FIELDS, ANALYSIS_INVALID_MODEL } = ERROR_MESSAGES;
 

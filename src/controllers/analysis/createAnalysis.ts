@@ -1,8 +1,7 @@
-import { ERROR_MESSAGES } from '@/constants';
+import { ERROR_MESSAGES, GPT_MODELS, MODEL_GPT_4 } from '@/constants';
 import { asyncHandler, throwCustomError } from '@/utils';
 import {
   ANALYSIS_REDIS_KEYS,
-  GPT_MODELS,
   openai,
   OPENAI_SETTINGS,
   redis,
@@ -46,7 +45,7 @@ export const createAnalysis = [
 
 const getDecrementValue = (model: string) => {
   switch (model) {
-    case 'gpt-4':
+    case MODEL_GPT_4:
       return 3;
     default:
       return 1;
