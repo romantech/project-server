@@ -1,4 +1,4 @@
-import { analysisPrompt, ERROR_MESSAGES } from '@/constants';
+import { ERROR_MESSAGES } from '@/constants';
 import { asyncHandler, throwCustomError } from '@/utils';
 import {
   ANALYSIS_REDIS_KEYS,
@@ -15,7 +15,7 @@ import { validateClientIP } from '@/middlewares/validateClientIP';
 
 type RequestBody = { sentence: string[]; model: (typeof GPT_MODELS)[number] };
 
-const { TOTAL_COUNT, COUNT_BY_IP } = ANALYSIS_REDIS_KEYS;
+const { TOTAL_COUNT, COUNT_BY_IP, ANALYSIS_PROMPT } = ANALYSIS_REDIS_KEYS;
 const { ANALYSIS_PARSE_ERROR } = ERROR_MESSAGES;
 
 export const createAnalysis = [
@@ -34,7 +34,8 @@ export const createAnalysis = [
     const { sentence, model }: RequestBody = req.body;
     const decValue = getDecrementValue(model);
 
-    const completion = await processOpenAICompletion(sentence, model);
+    const prompt = (await redis.get(ANALYSIS_PROMPT)) as string;
+    const completion = await processOpenAICompletion(sentence, model, prompt);
     await processRedisDecrement(clientIP, decValue);
 
     const analysis = completion.data.choices?.[0]?.message?.content;
@@ -52,11 +53,15 @@ const getDecrementValue = (model: string) => {
   }
 };
 
-const processOpenAICompletion = async (sentence: string[], model: string) => {
+const processOpenAICompletion = async (
+  sentence: string[],
+  model: string,
+  prompt: string,
+) => {
   return await openai.createChatCompletion({
     model,
     messages: [
-      { role: 'system', content: analysisPrompt },
+      { role: 'system', content: prompt },
       { role: 'user', content: JSON.stringify(sentence) },
     ],
     ...OPENAI_SETTINGS,
