@@ -5,7 +5,7 @@ import {
   redis,
 } from '@/services';
 import { asyncHandler } from '@/utils';
-import { validateClientIP } from '@/middlewares/validateClientIP';
+import { validateClientIP } from '@/middlewares';
 
 const { COUNT_BY_IP, TOTAL_COUNT } = ANALYSIS_REDIS_KEYS;
 
