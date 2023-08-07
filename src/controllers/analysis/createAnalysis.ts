@@ -21,7 +21,6 @@ export const createAnalysis = [
   checkSentenceField,
   checkModelField,
   validateClientIP,
-  /* 미들웨어에서 발생한 비동기 에러는 Express 에러 핸들러로 전달 안돼서 asyncHandler 함수로 랩핑 */
   validateAnalysisCount,
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
