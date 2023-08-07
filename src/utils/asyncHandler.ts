@@ -1,18 +1,15 @@
-import { NextFunction, Response } from 'express';
-import { RequestWithClientIP } from '@/types';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 
 type AsyncRequestHandler = (
-  req: RequestWithClientIP,
+  req: Request,
   res: Response,
   next: NextFunction,
 ) => Promise<Response | void>;
 
-export const asyncHandler = (requestHandler: AsyncRequestHandler) => {
-  return async (
-    req: RequestWithClientIP,
-    res: Response,
-    next: NextFunction,
-  ) => {
+export const asyncHandler = (
+  requestHandler: AsyncRequestHandler,
+): RequestHandler => {
+  return async (req, res, next) => {
     try {
       await requestHandler(req, res, next);
     } catch (err) {

@@ -8,4 +8,5 @@ export const ERROR_MESSAGES = {
     `${fields.join(', ')} field(s) is(are) required in request body`,
   ANALYSIS_INVALID_MODEL: (validValues: string[]) =>
     `Invalid model value. Allowed values are '${validValues.join(', ')}'`,
+  ANALYSIS_PARSE_ERROR: 'Failed to parse OpenAI analysis.',
 } as const;
