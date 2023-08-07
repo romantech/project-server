@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 
 import {
   ANALYSIS_INIT_COUNT,
@@ -6,37 +6,30 @@ import {
   ANALYSIS_REDIS_KEYS,
   redis,
 } from '@/services';
-import { asyncHandler, throwCustomError } from '@/utils';
-import { ERROR_MESSAGES } from '@/constants';
+import { asyncHandler } from '@/utils';
+import { RequestWithClientIP } from '@/types';
+import { validateClientIP } from '@/middlewares/validateClientIP';
 
-interface QueryString {
-  fingerprint?: string;
-}
+const { COUNT_BY_IP, TOTAL_COUNT } = ANALYSIS_REDIS_KEYS;
 
-const { COUNT_BY_ID, TOTAL_COUNT } = ANALYSIS_REDIS_KEYS;
-const { REDIS_ANALYSIS_REMAINING } = ERROR_MESSAGES;
+export const getRemainingCount = [
+  validateClientIP,
+  asyncHandler(async (req: RequestWithClientIP, res: Response) => {
+    const { clientIP } = req; // validateClientIP 미들웨어에서 검증하므로 항상 존재
 
-export const getRemainingCount = asyncHandler(
-  async (
-    req: Request<unknown, unknown, unknown, QueryString>,
-    res: Response,
-  ) => {
-    const fingerprint = req.query.fingerprint;
+    const total = Number(await redis.get(TOTAL_COUNT));
 
-    const total = Number((await redis.get(TOTAL_COUNT)) ?? 0);
-    if (total === 0) throwCustomError(REDIS_ANALYSIS_REMAINING);
-
-    if (!fingerprint) return res.json({ count: total });
-
-    const key = COUNT_BY_ID(fingerprint);
+    const key = COUNT_BY_IP(clientIP);
     const remaining = await redis.get(key);
+    const isNewClient = remaining === null;
+    const count = isNewClient
+      ? Math.min(ANALYSIS_INIT_COUNT, total)
+      : Math.min(Number(remaining), total);
 
-    if (remaining === null) {
-      const count = Math.min(ANALYSIS_INIT_COUNT, total);
+    if (isNewClient) {
       await redis.set(key, count, 'EX', ANALYSIS_KEY_EXP);
-      return res.json({ count });
     }
 
-    res.json({ count: Math.min(+remaining, total) });
-  },
-);
+    res.status(200).json({ count });
+  }),
+];

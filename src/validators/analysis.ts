@@ -2,16 +2,16 @@ import { body } from 'express-validator';
 import { GPT_MODELS } from '@/services';
 import { ERROR_MESSAGES } from '@/constants';
 
-const { ANALYSIS_INVALID_REQUEST, ANALYSIS_INVALID_MODEL } = ERROR_MESSAGES;
+const { ANALYSIS_MISSING_FIELDS, ANALYSIS_INVALID_MODEL } = ERROR_MESSAGES;
 
-export const checkSentence = body('sentence')
+export const checkSentenceField = body('sentence')
   .isArray({ min: 2, max: 20 })
-  .withMessage(ANALYSIS_INVALID_REQUEST(['sentence']));
+  .withMessage(ANALYSIS_MISSING_FIELDS(['sentence']));
 
-export const checkModel = body('model')
+export const checkModelField = body('model')
   .isIn(GPT_MODELS)
   .withMessage(ANALYSIS_INVALID_MODEL(GPT_MODELS));
 
-export const checkFingerprint = body('fingerprint')
+export const checkFingerprintField = body('fingerprint')
   .notEmpty()
-  .withMessage(ANALYSIS_INVALID_REQUEST(['fingerprint']));
+  .withMessage(ANALYSIS_MISSING_FIELDS(['fingerprint']));
