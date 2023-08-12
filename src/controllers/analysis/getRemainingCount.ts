@@ -12,10 +12,10 @@ const { COUNT_BY_IP, TOTAL_COUNT } = ANALYSIS_REDIS_KEYS;
 export const getRemainingCount = [
   validateClientIP,
   asyncHandler(async (req, res) => {
-    const { clientIP } = req; // validateClientIP 미들웨어에서 검증하므로 항상 존재
+    const clientIP = req.clientIP as string; // validateClientIP 미들웨어에서 검증하므로 항상 존재
 
     const total = await getTotalCount();
-    const count = await getCountByIP(clientIP!, total);
+    const count = await getCountByIP(clientIP, total);
     res.status(200).json({ count });
   }),
 ];
