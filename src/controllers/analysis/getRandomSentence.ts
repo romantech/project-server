@@ -1,7 +1,12 @@
 import { asyncHandler, throwCustomError } from '@/utils';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { ANALYSIS_REDIS_KEYS, openai, redis } from '@/services';
-import { MODEL_GPT_3_5, SENTENCE_QUERY_KEYS, SentenceQuery } from '@/constants';
+import {
+  ERROR_MESSAGES,
+  MODEL_GPT_3_5,
+  SENTENCE_QUERY_KEYS,
+  SentenceQuery,
+} from '@/constants';
 import {
   checkMaxCharField,
   checkSentenceCountField,
@@ -10,6 +15,8 @@ import {
 import { handleValidationErrors } from '@/middlewares';
 
 const { SENT_COUNT, TOPICS, MAX_CHARS } = SENTENCE_QUERY_KEYS;
+const { PROMPT_SENTENCE } = ANALYSIS_REDIS_KEYS;
+const { RETRIEVE_FAILED, GENERATE_FAILED, SERVICE_ERROR } = ERROR_MESSAGES;
 
 export const getRandomSentence = [
   checkMaxCharField,
@@ -20,8 +27,8 @@ export const getRandomSentence = [
     async (req, res) => {
       const { sent_count, topics, max_chars } = req.query;
 
-      const template = await fetchPromptTemplate();
-      if (!template) return throwCustomError('Failed to get template', 500);
+      const template = await redis.get(PROMPT_SENTENCE);
+      if (!template) return throwCustomError(RETRIEVE_FAILED('template'), 500);
 
       const prompt = replaceTemplateValues(
         template,
@@ -31,17 +38,12 @@ export const getRandomSentence = [
       );
 
       const sentence = await fetchSentenceFromOpenAI(prompt);
-      if (!sentence) throwCustomError('Failed to generate sentence', 500);
+      if (!sentence) return throwCustomError(GENERATE_FAILED('sentence'), 500);
 
-      res.status(200).json({ sentence });
+      res.status(200).json(JSON.parse(sentence));
     },
   ),
 ];
-
-const fetchPromptTemplate = async () => {
-  const template = await redis.get(ANALYSIS_REDIS_KEYS.PROMPT_SENTENCE);
-  return template || null;
-};
 
 const replaceTemplateValues = (
   template: string,
@@ -65,6 +67,6 @@ const fetchSentenceFromOpenAI = async (prompt: string) => {
 
     return completion.data.choices?.[0]?.message?.content || null;
   } catch (error) {
-    throwCustomError('OpenAI service error', 500);
+    throwCustomError(SERVICE_ERROR('OpenAI'), 500);
   }
 };

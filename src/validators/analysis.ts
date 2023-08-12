@@ -1,16 +1,14 @@
 import { body } from 'express-validator';
 import { ERROR_MESSAGES, GPT_MODELS } from '@/constants';
 
-const { ANALYSIS_MISSING_FIELDS, ANALYSIS_INVALID_MODEL } = ERROR_MESSAGES;
+const { MISSING_FIELD } = ERROR_MESSAGES;
 
 export const checkSentenceField = body('sentence')
   .isArray({ min: 2, max: 20 })
-  .withMessage(ANALYSIS_MISSING_FIELDS(['sentence']));
+  .withMessage(MISSING_FIELD('sentence'));
 
 export const checkModelField = body('model')
   .isIn(GPT_MODELS)
-  .withMessage(ANALYSIS_INVALID_MODEL(GPT_MODELS));
-
-export const checkFingerprintField = body('fingerprint')
-  .notEmpty()
-  .withMessage(ANALYSIS_MISSING_FIELDS(['fingerprint']));
+  .withMessage(
+    `Invalid model value. Allowed values are '${GPT_MODELS.join(', ')}'`,
+  );

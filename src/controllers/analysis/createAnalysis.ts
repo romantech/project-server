@@ -8,7 +8,7 @@ import { validateClientIP } from '@/middlewares/validateClientIP';
 type RequestBody = { sentence: string[]; model: (typeof GPT_MODELS)[number] };
 
 const { TOTAL_COUNT, COUNT_BY_IP, PROMPT_ANALYSIS } = ANALYSIS_REDIS_KEYS;
-const { ANALYSIS_PARSE_ERROR } = ERROR_MESSAGES;
+const { RETRIEVE_FAILED, GENERATE_FAILED, SERVICE_ERROR } = ERROR_MESSAGES;
 
 export const createAnalysis = [
   checkSentenceField,
@@ -21,13 +21,14 @@ export const createAnalysis = [
     const { sentence, model }: RequestBody = req.body;
     const decValue = getDecrementValue(model);
 
-    const prompt = (await redis.get(PROMPT_ANALYSIS)) as string;
-    const completion = await processOpenAICompletion(sentence, model, prompt);
-    await processRedisDecrement(clientIP, decValue);
+    const prompt = await redis.get(PROMPT_ANALYSIS);
+    if (!prompt) return throwCustomError(RETRIEVE_FAILED('prompt'), 500);
 
-    const analysis = completion.data.choices?.[0]?.message?.content;
-    if (analysis) res.status(200).json(JSON.parse(analysis));
-    else throwCustomError(ANALYSIS_PARSE_ERROR, 502);
+    const analysis = await fetchAnalysisFromOpenAI(sentence, model, prompt);
+    if (!analysis) return throwCustomError(GENERATE_FAILED('analysis'), 500);
+
+    await processRedisDecrement(clientIP, decValue);
+    res.status(200).json(JSON.parse(analysis));
   }),
 ];
 
@@ -40,19 +41,24 @@ const getDecrementValue = (model: string) => {
   }
 };
 
-const processOpenAICompletion = async (
+const fetchAnalysisFromOpenAI = async (
   sentence: string[],
   model: string,
   prompt: string,
 ) => {
-  return await openai.createChatCompletion({
-    model,
-    messages: [
-      { role: 'system', content: prompt },
-      { role: 'user', content: JSON.stringify(sentence) },
-    ],
-    temperature: 0.4,
-  });
+  try {
+    const completion = await openai.createChatCompletion({
+      model,
+      messages: [
+        { role: 'system', content: prompt },
+        { role: 'user', content: JSON.stringify(sentence) },
+      ],
+      temperature: 0.4,
+    });
+    return completion.data.choices?.[0]?.message?.content || null;
+  } catch (error) {
+    throwCustomError(SERVICE_ERROR('OpenAI'), 500);
+  }
 };
 
 const processRedisDecrement = async (clientIP: string, decValue: number) => {

@@ -1,12 +1,12 @@
 export const ERROR_MESSAGES = {
-  SERVER_ERROR: 'Server Error',
-  IP_UNIDENTIFIABLE: 'Client IP address not found or unidentifiable',
-  RESOURCE_NOT_FOUND:
-    'The requested resource was not found on this server. Please check your request URL and try again.',
-  ANALYSIS_NO_REMAINING: 'No remaining analysis count available.',
-  ANALYSIS_MISSING_FIELDS: (fields: string[]) =>
-    `${fields.join(', ')} field(s) is(are) required in request body`,
-  ANALYSIS_INVALID_MODEL: (validValues: string[]) =>
-    `Invalid model value. Allowed values are '${validValues.join(', ')}'`,
-  ANALYSIS_PARSE_ERROR: 'Failed to parse OpenAI analysis.',
+  SERVER_ERROR: 'Server Error.',
+  IP_UNIDENTIFIABLE: 'Client IP address not found or unidentifiable.',
+  NOT_FOUND:
+    'The requested resource was not found. Please check your request URL and try again.',
+
+  MISSING_FIELD: (fieldName: string) => `${fieldName} field is required.`,
+  RETRIEVE_FAILED: (resource: string) => `Failed to retrieve ${resource}.`,
+  GENERATE_FAILED: (resource: string) => `Failed to generate ${resource}.`,
+
+  SERVICE_ERROR: (service: string) => `${service} service error.`,
 } as const;
