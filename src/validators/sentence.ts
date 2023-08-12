@@ -1,7 +1,7 @@
 import { query } from 'express-validator';
-import { SENTENCE_QUERY_KEYS } from '@/constants';
+import { RANDOM_SENTENCE_PARAM_KEYS } from '@/constants';
 
-const { SENT_COUNT, TOPICS, MAX_CHARS } = SENTENCE_QUERY_KEYS;
+const { SENT_COUNT, TOPICS, MAX_CHARS } = RANDOM_SENTENCE_PARAM_KEYS;
 
 // 생성할 영어 문장 갯수
 export const checkSentenceCountField = query(SENT_COUNT)
@@ -9,7 +9,7 @@ export const checkSentenceCountField = query(SENT_COUNT)
   .isInt({ min: 1, max: 10 })
   .withMessage('Sentence count must be between 1 and 10.');
 
-// 주제 키워드
+// 주제 키워드 optional
 export const checkTopicsField = query(TOPICS)
   .toArray()
   .isArray({ min: 0, max: 5 })

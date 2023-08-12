@@ -5,7 +5,7 @@ import { ERROR_MESSAGES } from '@/constants';
 
 export function validateClientIP(
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) {
   const IP = requestIP.getClientIp(req);

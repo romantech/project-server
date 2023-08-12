@@ -4,8 +4,8 @@ import { ANALYSIS_REDIS_KEYS, fetchFromOpenAI, redis } from '@/services';
 import {
   ERROR_MESSAGES,
   MODEL_GPT_3_5,
-  SENTENCE_QUERY_KEYS,
-  SentenceQuery,
+  RANDOM_SENTENCE_PARAM_KEYS,
+  RandomSentenceParams,
 } from '@/constants';
 import {
   checkMaxCharField,
@@ -14,7 +14,7 @@ import {
 } from '@/validators';
 import { handleValidationErrors } from '@/middlewares';
 
-const { SENT_COUNT, TOPICS, MAX_CHARS } = SENTENCE_QUERY_KEYS;
+const { SENT_COUNT, TOPICS, MAX_CHARS } = RANDOM_SENTENCE_PARAM_KEYS;
 const { PROMPT_SENTENCE } = ANALYSIS_REDIS_KEYS;
 const { RETRIEVE_FAILED, GENERATE_FAILED } = ERROR_MESSAGES;
 
@@ -23,7 +23,7 @@ export const getRandomSentence = [
   checkTopicsField,
   checkSentenceCountField,
   handleValidationErrors,
-  asyncHandler<ParamsDictionary, unknown, unknown, SentenceQuery>(
+  asyncHandler<ParamsDictionary, unknown, unknown, RandomSentenceParams>(
     async (req, res) => {
       const { sent_count, topics, max_chars } = req.query;
 

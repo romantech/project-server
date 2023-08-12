@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 
+/** express-validator 유효성 검사시 사용할 에러 핸들러 */
 export const handleValidationErrors = (
   req: Request,
   res: Response,
