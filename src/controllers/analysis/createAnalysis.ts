@@ -1,11 +1,6 @@
 import { ERROR_MESSAGES, GPT_MODELS, MODEL_GPT_4 } from '@/constants';
 import { asyncHandler, throwCustomError } from '@/utils';
-import {
-  ANALYSIS_REDIS_KEYS,
-  openai,
-  OPENAI_SETTINGS,
-  redis,
-} from '@/services';
+import { ANALYSIS_REDIS_KEYS, openai, redis } from '@/services';
 import { checkModelField, checkSentenceField } from '@/validators';
 import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
 import { validateClientIP } from '@/middlewares/validateClientIP';
@@ -56,7 +51,7 @@ const processOpenAICompletion = async (
       { role: 'system', content: prompt },
       { role: 'user', content: JSON.stringify(sentence) },
     ],
-    ...OPENAI_SETTINGS,
+    temperature: 0.4,
   });
 };
 

@@ -3,13 +3,16 @@ export const MODEL_GPT_3_5 = 'gpt-3.5-turbo';
 export const GPT_MODELS = [MODEL_GPT_3_5, MODEL_GPT_4];
 
 export type SentenceQuery = {
-  sent_count: string; // 생성할 영어 문장 갯수
-  topics: string[]; // 주제 키워드
-  max_char: string; // 최대 글자 수
+  /** 생성할 영어 문장 개수 */
+  sent_count: string;
+  /** 주제 키워드 */
+  topics: string[];
+  /** 각 문장의 최대 글자 수 */
+  max_chars: string;
 };
 
-export const SENTENCE_QUERY_KEYS: Record<string, keyof SentenceQuery> = {
+export const SENTENCE_QUERY_KEYS = {
   SENT_COUNT: 'sent_count',
   TOPICS: 'topics',
-  MAX_CHAR: 'max_char',
-};
+  MAX_CHARS: 'max_chars',
+} satisfies Record<string, keyof SentenceQuery>;

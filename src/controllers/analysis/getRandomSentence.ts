@@ -9,7 +9,7 @@ import {
 } from '@/validators';
 import { handleValidationErrors } from '@/middlewares';
 
-const { SENT_COUNT, TOPICS, MAX_CHAR } = SENTENCE_QUERY_KEYS;
+const { SENT_COUNT, TOPICS, MAX_CHARS } = SENTENCE_QUERY_KEYS;
 
 export const getRandomSentence = [
   checkMaxCharField,
@@ -18,7 +18,7 @@ export const getRandomSentence = [
   handleValidationErrors,
   asyncHandler<ParamsDictionary, unknown, unknown, SentenceQuery>(
     async (req, res) => {
-      const { sent_count, topics, max_char } = req.query;
+      const { sent_count, topics, max_chars } = req.query;
 
       const template = await fetchPromptTemplate();
       if (!template) return throwCustomError('Failed to get template', 500);
@@ -27,7 +27,7 @@ export const getRandomSentence = [
         template,
         sent_count,
         topics.join(', '),
-        max_char,
+        max_chars,
       );
 
       const sentence = await fetchSentenceFromOpenAI(prompt);
@@ -46,13 +46,13 @@ const fetchPromptTemplate = async () => {
 const replaceTemplateValues = (
   template: string,
   count: string,
-  topic: string,
-  max: string,
+  topics: string,
+  chars: string,
 ) => {
   return template
     .replace(`{${SENT_COUNT}}`, count)
-    .replace(`{${TOPICS}}`, topic)
-    .replace(`{${MAX_CHAR}}`, max);
+    .replace(`{${TOPICS}}`, topics)
+    .replace(`{${MAX_CHARS}}`, chars);
 };
 
 const fetchSentenceFromOpenAI = async (prompt: string) => {
@@ -60,6 +60,7 @@ const fetchSentenceFromOpenAI = async (prompt: string) => {
     const completion = await openai.createChatCompletion({
       model: MODEL_GPT_3_5,
       messages: [{ role: 'user', content: prompt }],
+      temperature: 0.7,
     });
 
     return completion.data.choices?.[0]?.message?.content || null;
