@@ -1,6 +1,8 @@
 export const MODEL_GPT_4 = 'gpt-4';
 export const MODEL_GPT_3_5 = 'gpt-3.5-turbo';
-export const GPT_MODELS = [MODEL_GPT_3_5, MODEL_GPT_4];
+
+export type GPTModels = (typeof GPT_MODELS)[number];
+export const GPT_MODELS = [MODEL_GPT_3_5, MODEL_GPT_4] as const;
 
 export type SentenceQuery = {
   /** 생성할 영어 문장 개수 */

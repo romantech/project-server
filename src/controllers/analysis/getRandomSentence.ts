@@ -1,6 +1,6 @@
 import { asyncHandler, throwCustomError } from '@/utils';
 import { ParamsDictionary } from 'express-serve-static-core';
-import { ANALYSIS_REDIS_KEYS, openai, redis } from '@/services';
+import { ANALYSIS_REDIS_KEYS, fetchFromOpenAI, redis } from '@/services';
 import {
   ERROR_MESSAGES,
   MODEL_GPT_3_5,
@@ -16,7 +16,7 @@ import { handleValidationErrors } from '@/middlewares';
 
 const { SENT_COUNT, TOPICS, MAX_CHARS } = SENTENCE_QUERY_KEYS;
 const { PROMPT_SENTENCE } = ANALYSIS_REDIS_KEYS;
-const { RETRIEVE_FAILED, GENERATE_FAILED, SERVICE_ERROR } = ERROR_MESSAGES;
+const { RETRIEVE_FAILED, GENERATE_FAILED } = ERROR_MESSAGES;
 
 export const getRandomSentence = [
   checkMaxCharField,
@@ -58,15 +58,9 @@ const replaceTemplateValues = (
 };
 
 const fetchSentenceFromOpenAI = async (prompt: string) => {
-  try {
-    const completion = await openai.createChatCompletion({
-      model: MODEL_GPT_3_5,
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.7,
-    });
-
-    return completion.data.choices?.[0]?.message?.content || null;
-  } catch (error) {
-    throwCustomError(SERVICE_ERROR('OpenAI'), 500);
-  }
+  return fetchFromOpenAI({
+    model: MODEL_GPT_3_5,
+    messages: [{ role: 'user', content: prompt }],
+    temperature: 0.7,
+  });
 };
