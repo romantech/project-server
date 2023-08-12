@@ -1,26 +1,20 @@
 import { asyncHandler } from '@/utils';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { ANALYSIS_REDIS_KEYS, openai, redis } from '@/services';
-import { MODEL_GPT_3_5, SENTENCE_QUERY_KEYS } from '@/constants';
+import { MODEL_GPT_3_5, SENTENCE_QUERY_KEYS, SentenceQuery } from '@/constants';
 import {
-  checkCountField,
-  checkMaxLengthField,
-  checkTopicField,
+  checkMaxCharField,
+  checkSentenceCountField,
+  checkTopicsField,
 } from '@/validators';
 import { handleValidationErrors } from '@/middlewares';
-
-type SentenceQuery = {
-  sent_count: string; // 생성할 영어 문장 갯수
-  topics: string[]; // 주제 키워드
-  max_char: string; // 최대 글자 수
-};
 
 const { SENT_COUNT, TOPICS, MAX_CHAR } = SENTENCE_QUERY_KEYS;
 
 export const getRandomSentence = [
-  checkMaxLengthField,
-  checkCountField,
-  checkTopicField,
+  checkMaxCharField,
+  checkTopicsField,
+  checkSentenceCountField,
   handleValidationErrors,
   asyncHandler<ParamsDictionary, unknown, unknown, SentenceQuery>(
     async (req, res) => {
