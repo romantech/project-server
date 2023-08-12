@@ -23,14 +23,14 @@ export const checkModelField = body('model')
 // 생성할 영어 문장 갯수 optional
 export const checkSentenceCountField = query(SENT_COUNT)
   .default(5)
-  .isInt({ min: 1, max: 10 })
-  .withMessage('Sentence count must be between 1 and 10.');
+  .isInt({ min: 1, max: 5 })
+  .withMessage('Sentence count must be between 1 and 5.');
 
 // 주제 키워드 optional
 export const checkTopicsField = query(TOPICS)
   .toArray()
-  .isArray({ max: 5 })
-  .withMessage('A maximum of 5 topics is allowed.');
+  .isArray({ max: 3 })
+  .withMessage('A maximum of 3 topics is allowed.');
 
 // 각 문장의 최대 글자수 optional
 export const checkMaxCharField = query(MAX_CHARS)
