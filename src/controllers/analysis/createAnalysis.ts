@@ -6,15 +6,13 @@ import {
   OPENAI_SETTINGS,
   redis,
 } from '@/services';
-
-import { validationResult } from 'express-validator';
 import { checkModelField, checkSentenceField } from '@/validators';
-import { validateAnalysisCount } from '@/middlewares';
+import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
 import { validateClientIP } from '@/middlewares/validateClientIP';
 
 type RequestBody = { sentence: string[]; model: (typeof GPT_MODELS)[number] };
 
-const { TOTAL_COUNT, COUNT_BY_IP, ANALYSIS_PROMPT } = ANALYSIS_REDIS_KEYS;
+const { TOTAL_COUNT, COUNT_BY_IP, PROMPT_ANALYSIS } = ANALYSIS_REDIS_KEYS;
 const { ANALYSIS_PARSE_ERROR } = ERROR_MESSAGES;
 
 export const createAnalysis = [
@@ -22,17 +20,13 @@ export const createAnalysis = [
   checkModelField,
   validateClientIP,
   validateAnalysisCount,
+  handleValidationErrors,
   asyncHandler(async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     const clientIP = req.clientIP as string; // validateClientIP 미들웨어에서 검증하므로 항상 존재
     const { sentence, model }: RequestBody = req.body;
     const decValue = getDecrementValue(model);
 
-    const prompt = (await redis.get(ANALYSIS_PROMPT)) as string;
+    const prompt = (await redis.get(PROMPT_ANALYSIS)) as string;
     const completion = await processOpenAICompletion(sentence, model, prompt);
     await processRedisDecrement(clientIP, decValue);
 
