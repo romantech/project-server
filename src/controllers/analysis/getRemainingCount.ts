@@ -1,7 +1,7 @@
 import {
-  ANALYSIS_INIT_COUNT,
   ANALYSIS_KEY_EXP,
   ANALYSIS_REDIS_KEYS,
+  ANALYSIS_USER_INIT_COUNT,
   redis,
 } from '@/services';
 import { asyncHandler } from '@/utils';
@@ -31,7 +31,7 @@ const getCountByIP = async (clientIP: string, total: number) => {
   const isNewClient = remaining === null;
 
   const count = isNewClient
-    ? Math.min(ANALYSIS_INIT_COUNT, total)
+    ? Math.min(ANALYSIS_USER_INIT_COUNT, total)
     : Math.min(Number(remaining), total);
 
   if (isNewClient) {

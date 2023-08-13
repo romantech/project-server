@@ -1,13 +1,13 @@
 import {
+  ANALYSIS_MAX_INIT_COUNT,
   ANALYSIS_REDIS_KEYS,
-  ANALYSIS_TOTAL_INIT_COUNT,
   redis,
 } from '@/services';
 import schedule from 'node-schedule';
 import { logger } from '@/config';
 
 const resetAnalysisTotalCountKey = () => {
-  redis.set(ANALYSIS_REDIS_KEYS.TOTAL_COUNT, ANALYSIS_TOTAL_INIT_COUNT);
+  redis.set(ANALYSIS_REDIS_KEYS.TOTAL_COUNT, ANALYSIS_MAX_INIT_COUNT);
 };
 
 export const scheduleRedisReset = () => {
