@@ -17,6 +17,12 @@
   },
   "rules": {
     "prettier/prettier": ["warn", { "endOfLine": "auto" }],
-    "@typescript-eslint/no-unused-vars": 1
+    "@typescript-eslint/no-unused-vars": [
+      1,
+      {
+        "argsIgnorePattern": "^_", // 인자들 중에서 _로 시작하는 것은 무시
+        "varsIgnorePattern": "^_" // 변수들 중에서 _로 시작하는 것은 무시
+      }
+    ]
   }
 }

@@ -3,7 +3,7 @@ import schedule from 'node-schedule';
 import { logger } from '@/config';
 
 /** Koyeb 서버는 UTC 기준이므로 한국 시간(UTC+9) 00시는 '0 15 * * *'로 설정 */
-const CRON_TIME_RESET = '0 15 * * *';
+const KST_MIDNIGHT = '0 15 * * *';
 
 const resetAnalysisCounts = async () => {
   const { ANALYSIS, RANDOM_SENTENCE } = ANALYSIS_INIT_COUNTS;
@@ -21,7 +21,7 @@ const resetAnalysisCounts = async () => {
 };
 
 export const scheduleRedisReset = () => {
-  schedule.scheduleJob(CRON_TIME_RESET, resetAnalysisCounts);
+  schedule.scheduleJob(KST_MIDNIGHT, resetAnalysisCounts);
   logger.info(
     'Scheduled Redis total count reset at UTC 15:00 (KST 00:00) daily.',
   );
