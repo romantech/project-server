@@ -12,7 +12,7 @@ import {
   checkSentenceCountField,
   checkTopicsField,
 } from '@/validators';
-import { handleValidationErrors } from '@/middlewares';
+import { handleValidationErrors, validateIPAndCount } from '@/middlewares';
 
 const { SENT_COUNT, TOPICS, MAX_CHARS } = RANDOM_SENTENCE_PARAM_KEYS;
 const { RETRIEVE_FAILED, GENERATE_FAILED } = ERROR_MESSAGES;
@@ -22,6 +22,7 @@ export const getRandomSentences = [
   checkMaxCharField,
   checkTopicsField,
   checkSentenceCountField,
+  validateIPAndCount,
   handleValidationErrors,
   asyncHandler<ParamsDictionary, unknown, unknown, RandomSentenceParams>(
     async (req, res) => {

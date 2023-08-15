@@ -7,8 +7,7 @@ import {
 import { asyncHandler, throwCustomError } from '@/utils';
 import { ANALYSIS_KEYS, fetchFromOpenAI, redis } from '@/services';
 import { checkModelField, checkSentenceField } from '@/validators';
-import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
-import { validateClientIP } from '@/middlewares/validateClientIP';
+import { handleValidationErrors, validateIPAndCount } from '@/middlewares';
 
 type RequestBody = { sentence: string[]; model: GPTModels };
 
@@ -18,8 +17,7 @@ const { KEYS, FIELDS } = ANALYSIS_KEYS;
 export const createAnalysis = [
   checkSentenceField,
   checkModelField,
-  validateClientIP,
-  validateAnalysisCount,
+  validateIPAndCount,
   handleValidationErrors,
   asyncHandler(async (req, res) => {
     const clientIP = req.clientIP as string; // validateClientIP 미들웨어에서 검증하므로 항상 존재
