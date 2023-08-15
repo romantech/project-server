@@ -1,9 +1,4 @@
-import {
-  ERROR_MESSAGES,
-  GPTModels,
-  MODEL_GPT_3_5,
-  MODEL_GPT_4,
-} from '@/constants';
+import { ERROR_MESSAGES, GPTModel, GPTModels } from '@/constants';
 import { asyncHandler, throwCustomError } from '@/utils';
 import {
   ANALYZER_REDIS_SCHEMA,
@@ -14,7 +9,7 @@ import {
 import { checkModelField, checkSentenceField } from '@/validators';
 import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
 
-type RequestBody = { sentence: string[]; model: GPTModels };
+type RequestBody = { sentence: string[]; model: GPTModel };
 
 const { RETRIEVE_FAILED, GENERATE_FAILED } = ERROR_MESSAGES;
 const { KEYS, FIELDS } = ANALYZER_REDIS_SCHEMA;
@@ -45,8 +40,8 @@ export const createAnalysis = [
   }),
 ];
 
-const getDecrementValue = (model: GPTModels) => {
-  const DECREMENT_VALUES = { [MODEL_GPT_4]: 3, [MODEL_GPT_3_5]: 1 };
+const getDecrementValue = (model: GPTModel) => {
+  const DECREMENT_VALUES = { [GPTModels.GPT_4]: 3, [GPTModels.GPT_3]: 1 };
   return DECREMENT_VALUES[model];
 };
 

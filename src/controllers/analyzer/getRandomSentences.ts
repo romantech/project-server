@@ -8,8 +8,8 @@ import {
 } from '@/services';
 import {
   ERROR_MESSAGES,
-  MODEL_GPT_3_5,
-  RANDOM_SENTENCE_PARAM_KEYS,
+  GPTModels,
+  RandomSentenceParam,
   RandomSentenceParams,
 } from '@/constants';
 import {
@@ -19,7 +19,7 @@ import {
 } from '@/validators';
 import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
 
-const { SENT_COUNT, TOPICS, MAX_CHARS } = RANDOM_SENTENCE_PARAM_KEYS;
+const { SENT_COUNT, TOPICS, MAX_CHARS } = RandomSentenceParam;
 const { RETRIEVE_FAILED, GENERATE_FAILED } = ERROR_MESSAGES;
 const { KEYS, FIELDS } = ANALYZER_REDIS_SCHEMA;
 
@@ -73,7 +73,7 @@ const replaceTemplateValues = (
 
 const fetchSentenceFromOpenAI = async (prompt: string) => {
   return fetchFromOpenAI({
-    model: MODEL_GPT_3_5,
+    model: GPTModels.GPT_3,
     messages: [{ role: 'user', content: prompt }],
     temperature: 0.7,
   });

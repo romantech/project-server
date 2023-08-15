@@ -1,12 +1,12 @@
 import { body, query } from 'express-validator';
 import {
   ERROR_MESSAGES,
-  GPT_MODELS,
-  RANDOM_SENTENCE_PARAM_KEYS,
+  GPT_MODEL_LIST,
+  RandomSentenceParam,
 } from '@/constants';
 
 const { MISSING_FIELD } = ERROR_MESSAGES;
-const { SENT_COUNT, TOPICS, MAX_CHARS } = RANDOM_SENTENCE_PARAM_KEYS;
+const { SENT_COUNT, TOPICS, MAX_CHARS } = RandomSentenceParam;
 
 /* POST /analysis */
 export const checkSentenceField = body('sentence')
@@ -15,9 +15,9 @@ export const checkSentenceField = body('sentence')
 
 /** GET /analysis/random-sentence */
 export const checkModelField = body('model')
-  .isIn(GPT_MODELS)
+  .isIn(GPT_MODEL_LIST)
   .withMessage(
-    `Invalid model value. Allowed values are '${GPT_MODELS.join(', ')}'`,
+    `Invalid model value. Allowed values are '${GPT_MODEL_LIST.join(', ')}'`,
   );
 
 // 생성할 영어 문장 갯수 optional
