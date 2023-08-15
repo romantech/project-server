@@ -26,11 +26,14 @@ export const getRemainingCounts = [
 const getCounts = async (key: string) => {
   const result = await redis.hgetall(key);
 
-  const isValid = Object.values(FIELDS).every((key) => key in result);
+  const missingFields = Object.values(FIELDS).filter(
+    (field) => !(field in result),
+  );
 
-  if (!isValid) {
+  if (missingFields.length > 0) {
+    const fieldNames = missingFields.join(', ');
     throwCustomError(
-      `Invalid counts for key: ${key}. Some fields are missing.`,
+      `Invalid counts for key: ${key}. Missing fields: ${fieldNames}.`,
       500,
     );
   }
