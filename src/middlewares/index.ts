@@ -1,5 +1,5 @@
 export * from './errorHandler';
 export * from './notFoundHandler';
-export * from './validateIPAndCount';
+export * from './validateAnalysisCount';
 export * from './validateClientIP';
 export * from './handleValidationErrors';

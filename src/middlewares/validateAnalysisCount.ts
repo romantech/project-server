@@ -11,12 +11,11 @@ const {
 } = ANALYSIS_KEYS;
 
 /* 미들웨어에서 발생한 비동기 에러는 Express 에러 핸들러로 전달 안돼서 asyncHandler 함수로 랩핑 */
-export const validateIPAndCount = [
+export const validateAnalysisCount = [
   validateClientIP,
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { clientIP } = req; // 이전 미들웨어에서 설정된 값 사용.
-    if (!clientIP) return throwCustomError(IP_UNIDENTIFIABLE, 400);
-
+    // validateClientIP 미들웨어에서 검증하므로 clientIP 항상 존재
+    const clientIP = req.clientIP as string;
     const fieldName = getFieldName(req.path);
 
     const rawTotal = await redis.hget(REMAINING.TOTAL, fieldName);

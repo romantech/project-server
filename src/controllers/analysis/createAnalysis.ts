@@ -7,7 +7,7 @@ import {
 import { asyncHandler, throwCustomError } from '@/utils';
 import { ANALYSIS_KEYS, fetchFromOpenAI, redis } from '@/services';
 import { checkModelField, checkSentenceField } from '@/validators';
-import { handleValidationErrors, validateIPAndCount } from '@/middlewares';
+import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
 
 type RequestBody = { sentence: string[]; model: GPTModels };
 
@@ -17,10 +17,11 @@ const { KEYS, FIELDS } = ANALYSIS_KEYS;
 export const createAnalysis = [
   checkSentenceField,
   checkModelField,
-  validateIPAndCount,
+  validateAnalysisCount,
   handleValidationErrors,
   asyncHandler(async (req, res) => {
-    const clientIP = req.clientIP as string; // validateClientIP 미들웨어에서 검증하므로 항상 존재
+    // validateClientIP 미들웨어에서 검증하므로 항상 존재
+    const clientIP = req.clientIP as string;
     const { sentence, model }: RequestBody = req.body;
     const decValue = getDecrementValue(model);
 
