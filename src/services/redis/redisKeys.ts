@@ -1,8 +1,28 @@
-const ANALYSIS_PREFIX = 'analysis';
+const PREFIXES = { ANALYSIS: 'analysis' } as const;
 
-export const ANALYSIS_REDIS_KEYS = {
-  TOTAL_COUNT: `${ANALYSIS_PREFIX}:remaining:total`,
-  COUNT_BY_IP: (id: string) => `${ANALYSIS_PREFIX}:remaining:${id}`,
-  PROMPT_ANALYSIS: `${ANALYSIS_PREFIX}:prompt:create-analysis`,
-  PROMPT_SENTENCE: `${ANALYSIS_PREFIX}:prompt:random-sentence`,
-};
+const ANALYSIS_FIELDS = {
+  ANALYSIS: 'analysis',
+  RANDOM_SENTENCE: 'random_sentence',
+} as const;
+
+const KEYS = {
+  ANALYSIS: {
+    REMAINING: {
+      TOTAL: `${PREFIXES.ANALYSIS}:remaining:total`,
+      USER: (ip: string) => {
+        return `${PREFIXES.ANALYSIS}:remaining:user:${ip}` as const;
+      },
+    },
+    PROMPT: `${PREFIXES.ANALYSIS}:prompt`,
+  },
+} as const;
+
+export const ANALYSIS_KEYS = {
+  KEYS: KEYS.ANALYSIS,
+  FIELDS: ANALYSIS_FIELDS,
+} as const;
+
+export type AnalysisFields = Record<
+  (typeof ANALYSIS_FIELDS)[keyof typeof ANALYSIS_FIELDS],
+  string
+>;

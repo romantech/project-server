@@ -1,3 +1,3 @@
 export * from './createAnalysis';
-export * from './getRemainingCount';
-export * from './getRandomSentence';
+export * from './getRemainingCounts';
+export * from './getRandomSentences';

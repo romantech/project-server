@@ -1,3 +1,7 @@
-export const ANALYSIS_MAX_INIT_COUNT = 50;
-export const ANALYSIS_USER_INIT_COUNT = 10;
-export const ANALYSIS_KEY_EXP = 24 * 60 * 60; // 24시간
+/** 24시간 */
+export const ANALYSIS_KEY_EXP = 24 * 60 * 60;
+
+export const ANALYSIS_INIT_COUNTS = {
+  ANALYSIS: { TOTAL: 50, PER_USER: 10 },
+  RANDOM_SENTENCE: { TOTAL: 200, PER_USER: 20 },
+} as const;

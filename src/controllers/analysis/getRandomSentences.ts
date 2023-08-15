@@ -1,6 +1,6 @@
 import { asyncHandler, throwCustomError } from '@/utils';
 import { ParamsDictionary } from 'express-serve-static-core';
-import { ANALYSIS_REDIS_KEYS, fetchFromOpenAI, redis } from '@/services';
+import { ANALYSIS_KEYS, fetchFromOpenAI, redis } from '@/services';
 import {
   ERROR_MESSAGES,
   MODEL_GPT_3_5,
@@ -15,10 +15,10 @@ import {
 import { handleValidationErrors } from '@/middlewares';
 
 const { SENT_COUNT, TOPICS, MAX_CHARS } = RANDOM_SENTENCE_PARAM_KEYS;
-const { PROMPT_SENTENCE } = ANALYSIS_REDIS_KEYS;
 const { RETRIEVE_FAILED, GENERATE_FAILED } = ERROR_MESSAGES;
+const { KEYS, FIELDS } = ANALYSIS_KEYS;
 
-export const getRandomSentence = [
+export const getRandomSentences = [
   checkMaxCharField,
   checkTopicsField,
   checkSentenceCountField,
@@ -27,7 +27,7 @@ export const getRandomSentence = [
     async (req, res) => {
       const { sent_count, topics, max_chars } = req.query;
 
-      const template = await redis.get(PROMPT_SENTENCE);
+      const template = await redis.hget(KEYS.PROMPT, FIELDS.RANDOM_SENTENCE);
       if (!template) return throwCustomError(RETRIEVE_FAILED('template'), 500);
 
       const prompt = replaceTemplateValues(
