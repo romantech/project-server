@@ -28,7 +28,6 @@ export const createAnalysis = [
     // validateClientIP 미들웨어에서 검증하므로 항상 존재
     const clientIP = req.clientIP as string;
     const { sentence, model }: RequestBody = req.body;
-    const decValue = getDecrementValue(model);
 
     const prompt = await redis.hget(KEYS.PROMPT, FIELDS.ANALYSIS);
     if (!prompt) return throwCustomError(RETRIEVE_FAILED('prompt'), 500);
@@ -36,7 +35,12 @@ export const createAnalysis = [
     const analysis = await fetchAnalysisFromOpenAI(sentence, model, prompt);
     if (!analysis) return throwCustomError(GENERATE_FAILED('analysis'), 500);
 
-    await decrementRedisCounters(clientIP, FIELDS.ANALYSIS, decValue);
+    await decrementRedisCounters(
+      [KEYS.REMAINING.TOTAL, KEYS.REMAINING.USER(clientIP)],
+      FIELDS.ANALYSIS,
+      getDecrementValue(model),
+    );
+
     res.status(200).json(JSON.parse(analysis));
   }),
 ];

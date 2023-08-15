@@ -48,7 +48,12 @@ export const getRandomSentences = [
       const sentence = await fetchSentenceFromOpenAI(prompt);
       if (!sentence) return throwCustomError(GENERATE_FAILED('sentence'), 500);
 
-      await decrementRedisCounters(clientIP, FIELDS.RANDOM_SENTENCE, 1);
+      await decrementRedisCounters(
+        [KEYS.REMAINING.TOTAL, KEYS.REMAINING.USER(clientIP)],
+        FIELDS.RANDOM_SENTENCE,
+        1,
+      );
+
       res.status(200).json(JSON.parse(sentence));
     },
   ),
