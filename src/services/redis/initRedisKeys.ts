@@ -1,9 +1,9 @@
 import Redis from 'ioredis';
-import { ANALYSIS_INIT_COUNTS, ANALYSIS_KEYS } from '@/services';
+import { ANALYSIS_INIT_COUNTS, REDIS_ANALYZER } from '@/services';
 
 const initializeAnalysisKeys = async (redis: Redis) => {
   const { ANALYSIS, RANDOM_SENTENCE } = ANALYSIS_INIT_COUNTS;
-  const { KEYS, FIELDS } = ANALYSIS_KEYS;
+  const { KEYS, FIELDS } = REDIS_ANALYZER;
 
   const [analysis, randomSentence] = await redis.hmget(
     KEYS.REMAINING.TOTAL,

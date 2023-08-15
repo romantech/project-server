@@ -1,6 +1,11 @@
 import { asyncHandler, throwCustomError } from '@/utils';
 import { ParamsDictionary } from 'express-serve-static-core';
-import { ANALYSIS_KEYS, fetchFromOpenAI, redis } from '@/services';
+import {
+  decrementRedisCounters,
+  fetchFromOpenAI,
+  redis,
+  REDIS_ANALYZER,
+} from '@/services';
 import {
   ERROR_MESSAGES,
   MODEL_GPT_3_5,
@@ -16,7 +21,7 @@ import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
 
 const { SENT_COUNT, TOPICS, MAX_CHARS } = RANDOM_SENTENCE_PARAM_KEYS;
 const { RETRIEVE_FAILED, GENERATE_FAILED } = ERROR_MESSAGES;
-const { KEYS, FIELDS } = ANALYSIS_KEYS;
+const { KEYS, FIELDS } = REDIS_ANALYZER;
 
 export const getRandomSentences = [
   checkMaxCharField,
@@ -26,6 +31,8 @@ export const getRandomSentences = [
   handleValidationErrors,
   asyncHandler<ParamsDictionary, unknown, unknown, RandomSentenceParams>(
     async (req, res) => {
+      // validateClientIP 미들웨어에서 검증하므로 항상 존재
+      const clientIP = req.clientIP as string;
       const { sent_count, topics, max_chars } = req.query;
 
       const template = await redis.hget(KEYS.PROMPT, FIELDS.RANDOM_SENTENCE);
@@ -41,6 +48,7 @@ export const getRandomSentences = [
       const sentence = await fetchSentenceFromOpenAI(prompt);
       if (!sentence) return throwCustomError(GENERATE_FAILED('sentence'), 500);
 
+      await decrementRedisCounters(clientIP, FIELDS.RANDOM_SENTENCE, 1);
       res.status(200).json(JSON.parse(sentence));
     },
   ),

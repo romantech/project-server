@@ -1,14 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import { ANALYSIS_KEYS, redis } from '@/services';
+import { redis, REDIS_ANALYZER } from '@/services';
 import { asyncHandler, throwCustomError } from '@/utils';
-import { ERROR_MESSAGES } from '@/constants';
 import { validateClientIP } from '@/middlewares/validateClientIP';
+import { AnalysisRoutes } from '@/routes/analysis';
 
-const { IP_UNIDENTIFIABLE } = ERROR_MESSAGES;
 const {
   KEYS: { REMAINING },
   FIELDS: { ANALYSIS, RANDOM_SENTENCE },
-} = ANALYSIS_KEYS;
+} = REDIS_ANALYZER;
 
 /* 미들웨어에서 발생한 비동기 에러는 Express 에러 핸들러로 전달 안돼서 asyncHandler 함수로 랩핑 */
 export const validateAnalysisCount = [
@@ -34,7 +33,7 @@ export const validateAnalysisCount = [
 
 const getFieldName = (pathname: string) => {
   switch (pathname) {
-    case '/random-sentences':
+    case AnalysisRoutes.RANDOM_SENTENCES:
       return RANDOM_SENTENCE;
     default:
       return ANALYSIS;

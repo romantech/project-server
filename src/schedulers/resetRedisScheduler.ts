@@ -1,4 +1,4 @@
-import { ANALYSIS_INIT_COUNTS, ANALYSIS_KEYS, redis } from '@/services';
+import { ANALYSIS_INIT_COUNTS, redis, REDIS_ANALYZER } from '@/services';
 import schedule from 'node-schedule';
 import { logger } from '@/config';
 
@@ -7,7 +7,7 @@ const KST_MIDNIGHT = '0 15 * * *';
 
 const resetAnalysisCounts = async () => {
   const { ANALYSIS, RANDOM_SENTENCE } = ANALYSIS_INIT_COUNTS;
-  const { KEYS, FIELDS } = ANALYSIS_KEYS;
+  const { KEYS, FIELDS } = REDIS_ANALYZER;
 
   try {
     await redis.hmset(KEYS.REMAINING.TOTAL, {

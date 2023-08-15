@@ -3,7 +3,7 @@ import requestIP from 'request-ip';
 
 const healthRouter = Router();
 
-healthRouter.get(['/', '/health'], (req, res, next) => {
+healthRouter.get(['/', '/health'], (req, res, _next) => {
   const request_ip = requestIP.getClientIp(req);
 
   res.status(200).send({

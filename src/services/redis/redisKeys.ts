@@ -1,28 +1,29 @@
-const PREFIXES = { ANALYSIS: 'analysis' } as const;
+enum Namespace {
+  ANALYZER = 'analyzer',
+}
 
-const ANALYSIS_FIELDS = {
-  ANALYSIS: 'analysis',
-  RANDOM_SENTENCE: 'random_sentence',
-} as const;
+enum AnalyzerField {
+  ANALYSIS = 'analysis',
+  RANDOM_SENTENCE = 'random_sentence',
+}
 
-const KEYS = {
-  ANALYSIS: {
-    REMAINING: {
-      TOTAL: `${PREFIXES.ANALYSIS}:remaining:total`,
-      USER: (ip: string) => {
-        return `${PREFIXES.ANALYSIS}:remaining:user:${ip}` as const;
-      },
+export const REDIS_KEYS = {
+  REMAINING: {
+    TOTAL: `${Namespace.ANALYZER}:remaining:total`,
+    USER: (ip: string) => {
+      return `${Namespace.ANALYZER}:remaining:user:${ip}` as const;
     },
-    PROMPT: `${PREFIXES.ANALYSIS}:prompt`,
   },
+  PROMPT: `${Namespace.ANALYZER}:prompt`,
 } as const;
 
-export const ANALYSIS_KEYS = {
-  KEYS: KEYS.ANALYSIS,
-  FIELDS: ANALYSIS_FIELDS,
+export const REDIS_ANALYZER = {
+  KEYS: REDIS_KEYS,
+  FIELDS: AnalyzerField, // 객체
 } as const;
 
-export type AnalysisFields = Record<
-  (typeof ANALYSIS_FIELDS)[keyof typeof ANALYSIS_FIELDS],
-  string
->;
+/**
+ * 이넘(enum)은 런타임에선 객체로, 타입 문맥에선 멤버의 유니온 타입으로 동작.
+ * 따라서, 아래 Record 키(key)로 사용된 이넘은 'analysis' | 'random_sentence' 타입.
+ */
+export type AnalyzerFieldType = Record<AnalyzerField, string>;
