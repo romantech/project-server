@@ -1,4 +1,3 @@
-import { NextFunction, Request, Response } from 'express';
 import { ANALYZER_REDIS_SCHEMA, redis } from '@/services';
 import { asyncHandler, throwCustomError } from '@/utils';
 import { validateClientIP } from '@/middlewares/validateClientIP';
@@ -12,7 +11,7 @@ const {
 /* 미들웨어에서 발생한 비동기 에러는 Express 에러 핸들러로 전달 안돼서 asyncHandler 함수로 랩핑 */
 export const validateAnalysisCount = [
   validateClientIP,
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  asyncHandler(async (req, res, next) => {
     // validateClientIP 미들웨어에서 검증하므로 clientIP 항상 존재
     const clientIP = req.clientIP as string;
     const fieldName = getFieldName(req.path);
