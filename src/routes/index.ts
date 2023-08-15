@@ -1,8 +1,8 @@
 import { Application } from 'express';
 import { healthRouter } from './health';
-import { analysisRouter } from './analysis';
+import { analyzerRouter } from './analyzer';
 
 export const setupRoutes = (app: Application) => {
   app.use('/', healthRouter);
-  app.use('/analysis', analysisRouter);
+  app.use('/analyzer', analyzerRouter);
 };

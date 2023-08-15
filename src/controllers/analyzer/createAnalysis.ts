@@ -6,10 +6,10 @@ import {
 } from '@/constants';
 import { asyncHandler, throwCustomError } from '@/utils';
 import {
+  ANALYZER_REDIS_SCHEMA,
   decrementRedisCounters,
   fetchFromOpenAI,
   redis,
-  REDIS_ANALYZER,
 } from '@/services';
 import { checkModelField, checkSentenceField } from '@/validators';
 import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
@@ -17,7 +17,7 @@ import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
 type RequestBody = { sentence: string[]; model: GPTModels };
 
 const { RETRIEVE_FAILED, GENERATE_FAILED } = ERROR_MESSAGES;
-const { KEYS, FIELDS } = REDIS_ANALYZER;
+const { KEYS, FIELDS } = ANALYZER_REDIS_SCHEMA;
 
 export const createAnalysis = [
   checkSentenceField,

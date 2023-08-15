@@ -1,9 +1,9 @@
 import Redis from 'ioredis';
-import { ANALYSIS_INIT_COUNTS, REDIS_ANALYZER } from '@/services';
+import { ANALYZER_INIT_COUNTS, ANALYZER_REDIS_SCHEMA } from '@/services';
 
-const initializeAnalysisKeys = async (redis: Redis) => {
-  const { ANALYSIS, RANDOM_SENTENCE } = ANALYSIS_INIT_COUNTS;
-  const { KEYS, FIELDS } = REDIS_ANALYZER;
+const analyzerCountKeys = async (redis: Redis) => {
+  const { ANALYSIS, RANDOM_SENTENCE } = ANALYZER_INIT_COUNTS;
+  const { KEYS, FIELDS } = ANALYZER_REDIS_SCHEMA;
 
   const [analysis, randomSentence] = await redis.hmget(
     KEYS.REMAINING.TOTAL,
@@ -16,10 +16,10 @@ const initializeAnalysisKeys = async (redis: Redis) => {
   if (!analysis) updates[FIELDS.ANALYSIS] = ANALYSIS.TOTAL;
   if (!randomSentence) updates[FIELDS.RANDOM_SENTENCE] = RANDOM_SENTENCE.TOTAL;
 
-  const shouldUpdate = Object.keys(updates).length;
-  if (shouldUpdate) return redis.hmset(KEYS.REMAINING.TOTAL, updates);
+  const needsUpdate = Object.keys(updates).length;
+  if (needsUpdate) return redis.hmset(KEYS.REMAINING.TOTAL, updates);
 };
 
 export const initRedisKeys = async (redis: Redis) => {
-  await initializeAnalysisKeys(redis);
+  await analyzerCountKeys(redis);
 };

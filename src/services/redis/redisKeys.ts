@@ -7,7 +7,7 @@ enum AnalyzerField {
   RANDOM_SENTENCE = 'random_sentence',
 }
 
-export const REDIS_KEYS = {
+const ANALYZER_KEYS = {
   REMAINING: {
     TOTAL: `${Namespace.ANALYZER}:remaining:total`,
     USER: (ip: string) => {
@@ -17,8 +17,8 @@ export const REDIS_KEYS = {
   PROMPT: `${Namespace.ANALYZER}:prompt`,
 } as const;
 
-export const REDIS_ANALYZER = {
-  KEYS: REDIS_KEYS,
+export const ANALYZER_REDIS_SCHEMA = {
+  KEYS: ANALYZER_KEYS,
   FIELDS: AnalyzerField, // 객체
 } as const;
 

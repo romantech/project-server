@@ -1,10 +1,10 @@
 import { asyncHandler, throwCustomError } from '@/utils';
 import { ParamsDictionary } from 'express-serve-static-core';
 import {
+  ANALYZER_REDIS_SCHEMA,
   decrementRedisCounters,
   fetchFromOpenAI,
   redis,
-  REDIS_ANALYZER,
 } from '@/services';
 import {
   ERROR_MESSAGES,
@@ -21,7 +21,7 @@ import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
 
 const { SENT_COUNT, TOPICS, MAX_CHARS } = RANDOM_SENTENCE_PARAM_KEYS;
 const { RETRIEVE_FAILED, GENERATE_FAILED } = ERROR_MESSAGES;
-const { KEYS, FIELDS } = REDIS_ANALYZER;
+const { KEYS, FIELDS } = ANALYZER_REDIS_SCHEMA;
 
 export const getRandomSentences = [
   checkMaxCharField,

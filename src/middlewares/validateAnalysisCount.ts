@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import { redis, REDIS_ANALYZER } from '@/services';
+import { ANALYZER_REDIS_SCHEMA, redis } from '@/services';
 import { asyncHandler, throwCustomError } from '@/utils';
 import { validateClientIP } from '@/middlewares/validateClientIP';
-import { AnalysisRoutes } from '@/routes/analysis';
+import { AnalyzerRoute } from '@/routes/analyzer';
 
 const {
   KEYS: { REMAINING },
   FIELDS: { ANALYSIS, RANDOM_SENTENCE },
-} = REDIS_ANALYZER;
+} = ANALYZER_REDIS_SCHEMA;
 
 /* 미들웨어에서 발생한 비동기 에러는 Express 에러 핸들러로 전달 안돼서 asyncHandler 함수로 랩핑 */
 export const validateAnalysisCount = [
@@ -24,7 +24,7 @@ export const validateAnalysisCount = [
     const userTotal = Number(rawUserTotal);
 
     if (total <= 0 || userTotal <= 0) {
-      throwCustomError('No remaining analysis count available.', 400);
+      throwCustomError('No remaining request count available.', 400);
     }
 
     next(); // 모든 체크 성공
@@ -33,7 +33,7 @@ export const validateAnalysisCount = [
 
 const getFieldName = (pathname: string) => {
   switch (pathname) {
-    case AnalysisRoutes.RANDOM_SENTENCES:
+    case AnalyzerRoute.RANDOM_SENTENCES:
       return RANDOM_SENTENCE;
     default:
       return ANALYSIS;

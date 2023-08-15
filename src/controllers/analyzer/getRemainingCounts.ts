@@ -1,15 +1,15 @@
 import {
-  ANALYSIS_INIT_COUNTS,
-  ANALYSIS_KEY_EXP,
+  ANALYZER_INIT_COUNTS,
+  ANALYZER_KEY_EXP,
+  ANALYZER_REDIS_SCHEMA,
   AnalyzerFieldType,
   redis,
-  REDIS_ANALYZER,
 } from '@/services';
 import { asyncHandler, throwCustomError } from '@/utils';
 import { validateClientIP } from '@/middlewares';
 
-const { ANALYSIS, RANDOM_SENTENCE } = ANALYSIS_INIT_COUNTS;
-const { KEYS, FIELDS } = REDIS_ANALYZER;
+const { ANALYSIS, RANDOM_SENTENCE } = ANALYZER_INIT_COUNTS;
+const { KEYS, FIELDS } = ANALYZER_REDIS_SCHEMA;
 
 export const getRemainingCounts = [
   validateClientIP,
@@ -61,7 +61,7 @@ const getCountsByIP = async (clientIP: string, total: AnalyzerFieldType) => {
       [FIELDS.ANALYSIS]: analysis,
       [FIELDS.RANDOM_SENTENCE]: random_sentence,
     });
-    await redis.expire(key, ANALYSIS_KEY_EXP);
+    await redis.expire(key, ANALYZER_KEY_EXP);
   }
 
   return { analysis, random_sentence };

@@ -1,1 +1,1 @@
-export * as analysisController from './analysis';
+export * as analyzerController from './analyzer';

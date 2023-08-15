@@ -1,2 +1,2 @@
 export * from './errorMessages';
-export * from './analysis';
+export * from './analyzer';
