@@ -34,6 +34,6 @@ export const checkTopicsField = query(TOPICS)
 
 // 각 문장의 최대 글자수 optional
 export const checkMaxCharField = query(MAX_CHARS)
-  .default(90)
-  .isInt({ min: 10, max: 90 })
-  .withMessage('Max characters must be between 10 and 90.');
+  .default(80)
+  .isInt({ min: 10, max: 80 })
+  .withMessage('Max characters must be between 10 and 80.');
