@@ -4,12 +4,12 @@ import morgan from 'morgan';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors, { CorsOptions } from 'cors';
-import { isProd } from '@/config/environment';
+import { CORS_ORIGIN, isProd } from '@/config/environment';
 
 const morganFormat = isProd() ? 'combined' : 'dev';
 const corsOptions: CorsOptions = {
   /** Access-Control-Allow-Origin 응답 헤더 설정 (허용할 오리진 목록) */
-  origin: 'http://localhost:5173', // TODO 배포후 변경
+  origin: CORS_ORIGIN,
   /** Access-Control-Allow-Methods 응답 헤더 설정 (허용할 HTTP 메서드 목록) */
   methods: ['GET', 'POST'],
   /** Access-Control-Allow-Headers 응답 헤더 설정 (허용할 요청 헤더 목록) */
@@ -33,12 +33,13 @@ const corsOptions: CorsOptions = {
 export const createServer = (): Application => {
   const app = express();
 
+  app.use(helmet());
+
   app.use(cors(corsOptions));
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
   app.use(compression());
-  app.use(helmet());
   app.use(morgan(morganFormat));
   app.use(cookieParser());
 
