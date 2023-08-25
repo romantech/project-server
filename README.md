@@ -1,9 +1,9 @@
 # Syntax Analyzer
-Below are the API specifications for the [Syntax Analyzer project](https://github.com/romantech/syntax-analyzer). These APIs provide functionalities like syntax analysis and random sentence generation.
+Below are the API specifications for the [Syntax Analyzer](https://github.com/romantech/syntax-analyzer) project, offering features such as syntax analysis and random sentence generation.
 
-### Create syntax analysis data
+### Analyze Sentence Syntax
 
-This endpoint allows users to perform syntax analysis on a tokenized sentence using specified AI models. The analysis breaks down the sentence into its grammatical constituents and segments, providing detailed insights into its structure.
+This endpoint uses specified AI models to analyze the syntax of tokenized sentences, breaking them down into grammatical elements for detailed structural insights.
 
 #### Endpoint
 
@@ -15,8 +15,8 @@ POST /analyzer
 
 | Field | Type | Options | Required | Description | Constraints |
 | --- | --- | --- | --- | --- | --- |
-| model | string | gpt-3.5, gpt-4 | Yes | Specifies which AI model to use for analysis | Must be one of the provided options |
-| sentence | Array<string> | N/A | Yes | An array of tokens to be analyzed | Length: 2-20 tokens |
+| `model` | `string` | `gpt-3.5`, `gpt-4` | Yes | AI model for analysis | One of: `gpt-3.5`, `gpt-4` |
+| `sentence` | `Array<string>` | N/A | Yes | Tokens for analysis | Range: 2~20 tokens |
 
 > Example Request
 ```json
@@ -28,40 +28,42 @@ POST /analyzer
 
 #### Response
 
-> Response Schema
+> Analysis Data Model
 ```tsx
 type AnalysisSource = 'user' | 'sample';
 type ISODateString = string;
 type ConstituentType = 'clause' | 'phrase' | 'token'
 
 type TConstituent = {
-  id: number;                   // A random 9-digit number
-  elementId: number;            // Constituent ID with a fixed value
-  label: string;                // Grammatical constituent name in lowercase
-  abbreviation: string;         // Abbreviated constituent name in lowercase
-  type: ConstituentType;        // Constituent type
-  comment?: string;             // Optional comment
+  id: number;                   // Random 9-digit number
+  elementId: number;            // Constituent ID
+  label: string;                // Grammatical label, e.g., "subject"
+  abbreviation: string;         // Abbreviation, e.g., "s"
+  type: ConstituentType;        // Type of constituent
+  comment?: string;             // Optional commentary
 };
 
 type TSegment = {
-  id: number;                   // A random 9-digit number
-  begin: number;                // Start token index of the current segment
-  end: number;                  // End token index of the current segment
-  constituents: TConstituent[]; // Constituents of the current segment
-  children: TSegment[];         // Child segments
+  id: number;                   // Random 9-digit number
+  begin: number;                // Start index
+  end: number;                  // End index
+  constituents: TConstituent[]; // Segment constituents
+  children: TSegment[];         // Sub-segments
 };
 
 type TAnalysis = {
-  id: string;                   // A random string of 21 bytes
-  source: AnalysisSource;       // Origin of the sentence
-  createdAt: ISODateString;     // Timestamp in ISO 8601 format
-  sentence: string[];           // The tokenized sentence
-  rootSegment: TSegment;        // Contains only a single root segment
-  isAnalyzedByGPT: boolean;     // Whether the sentence has been analyzed by AI or not
+  id: string;                   // Random 21-byte string
+  source: AnalysisSource;       // Data source
+  createdAt: ISODateString;     // ISO 8601 timestamp
+  sentence: string[];           // Tokenized sentence
+  rootSegment: TSegment;        // Root segment
+  isAnalyzedByGPT: boolean;     // AI-analyzed status
 };
 ```
 
-> 200 OK
+<details><summary>200 OK</summary>
+<br />
+	
 ```json
 {
   "id": "YW6AX-AOZb2-xYXt05xkn",
@@ -72,14 +74,70 @@ type TAnalysis = {
     "id": 840296172,
     "begin": 0,
     "end": 5,
-    "constituents": [/* ... */],
-    "children": [/* ... */]
+    "constituents": [],
+    "children": [
+      {
+        "id": 987654321,
+        "begin": 0,
+        "end": 2,
+        "constituents": [
+          {
+            "id": 456789123,
+            "elementId": 1,
+            "label": "subject",
+            "abbreviation": "s",
+            "type": "token"
+          }
+        ],
+        "children": []
+      },
+      {
+        "id": 789123456,
+        "begin": 2,
+        "end": 3,
+        "constituents": [
+          {
+            "id": 321654987,
+            "elementId": 2,
+            "label": "verb",
+            "abbreviation": "v",
+            "type": "token"
+          }
+        ],
+        "children": []
+      },
+      {
+        "id": 654321789,
+        "begin": 3,
+        "end": 4,
+        "constituents": [
+          {
+            "id": 654987321,
+            "elementId": 5,
+            "label": "object",
+            "abbreviation": "o",
+            "type": "token"
+          }
+        ],
+        "children": []
+      },
+      {
+        "id": 321789654,
+        "begin": 4,
+        "end": 5,
+        "constituents": [],
+        "children": []
+      }
+    ]
   },
   "isAnalyzedByGPT": true
 }
 ```
+</details>
 
-> 400 Bad Request
+<details><summary>400 Bad Request</summary>
+<br />
+	
 ```json
 {
   "errors": [
@@ -93,10 +151,11 @@ type TAnalysis = {
   ]
 }
 ```
+</details>
 
 ### Generate random sentences
 
-This endpoint allows users to generate a set of random sentences based on optional constraints such as the number of sentences, maximum characters per sentence, and topics. 
+This endpoint generates random sentences, optionally constrained by sentence count, character limit, and topics.
 
 #### Endpoint
 
@@ -108,13 +167,15 @@ GET /analyzer/random-sentences
 
 | Field | Type | Required | Default | Description | Constraints |
 | --- | --- | --- | --- | --- | --- |
-| sent_count | number | No | 5 | Number of random sentences to generate | Range: 1~5 |
-| max_chars | number | No | 80 | Maximum number of characters per random sentence | Range: 10~80 |
-| topics | string[] | No | [] | Topics for the random sentences | Max items: 3 |
+| `sent_count` | `number` | No | `5` | Quantity of sentences | Range: 1~5 |
+| `max_chars` | `number` | No | `80` | Character limit per sentence | Range: 10~80 |
+| `topics` | `Array<string>` | No | `[]` | Topics to include in sentences | Max 3 topics |
 
 #### Response
 
-> 200 OK
+<details><summary>200 OK</summary>
+<br />
+	
 ```json
 [
   "Apples are a popular fruit that come in many different varieties.",
@@ -122,8 +183,11 @@ GET /analyzer/random-sentences
   "Apple cider is a refreshing beverage made from pressed apples.",
 ]
 ```
+</details>
 
-> 400 Bad Request
+<details><summary>400 Bad Request</summary>
+<br />
+	
 ```json
 {
   "errors": [
@@ -137,13 +201,13 @@ GET /analyzer/random-sentences
   ]
 }
 ```
+</details>
 
 ### Check remaining counts
 
-This endpoint provides the remaining available counts for both syntax analysis and random sentence generation per user. Counts reset daily with a maximum limit of 10 analyses and 20 random sentences per user.
+This endpoint provides remaining user quotas for syntax analysis and random sentences, resetting daily to 10 and 20, respectively.
 
 #### Endpoint
-
 
 ```
 GET /analyzer/remaining-counts
@@ -151,18 +215,26 @@ GET /analyzer/remaining-counts
 
 #### Response
 
-> 200 OK
+<details><summary>200 OK</summary>
+<br />
+	
 ```json
 {
-  "analysis": 10, // Remaining count for syntax analysis
-  "random_sentence": 20 // Remaining count for random sentence generation
+  "analysis": 10,
+  "random_sentence": 20
 }
 ```
+- `analysis` : Remaining count for syntax analysis
+- `random_sentence` : Remaining count for random sentence generation
+</details>
 
-> 400 Bad Request
+<details><summary>400 Bad Request</summary>
+<br />
+	
 ```json
 {
-	"status": "error",
-	"message": "Error description"
+  "status": "error",
+  "message": "Error description"
 }
 ```
+</details>
