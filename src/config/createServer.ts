@@ -33,9 +33,18 @@ const corsOptions: CorsOptions = {
 export const createServer = (): Application => {
   const app = express();
 
+  /**
+   * Helmet 라이브러리를 이용해 보안 관련 HTTP 헤더 자동 설정
+   * Strict-Transport-Security(HTTPS 강제), X-Frame-Options(클릭 재킹 방지) 등
+   * */
   app.use(helmet());
-
   app.use(cors(corsOptions));
+
+  /**
+   * URL-encoded(Hello World! 문자열을 인코딩하면 Hello+World%21) 문자열 파싱
+   * { extended: true } 옵션으로 qs 라이브러리를 사용해서 더 다양한 데이터 형식 지원
+   * HTTP 프로토콜과 URL 은 ASCII 문자셋만 지원. 공백, 특수문자 등을 사용하기 위해 URL 인코딩
+   * */
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
@@ -43,6 +52,11 @@ export const createServer = (): Application => {
   app.use(morgan(morganFormat));
   app.use(cookieParser());
 
+  /**
+   * X-Powered-By 헤더는 백엔드 프레임워크, 언어 등에 대한 정보를 나타냄
+   * Express 는 기본적으로 X-Powered-By: Express 라고 설정됨
+   * 보안을 위해 X-Powered-By 헤더 제거
+   * */
   app.disable('x-powered-by');
 
   return app;
