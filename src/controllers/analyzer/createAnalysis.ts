@@ -4,6 +4,7 @@ import {
   ANALYZER_REDIS_SCHEMA,
   decrementRedisCounters,
   fetchFromOpenAI,
+  getFineTunedModel,
   redis,
 } from '@/services';
 import { checkModelField, checkSentenceField } from '@/validators';
@@ -27,7 +28,11 @@ export const createAnalysis = [
     const prompt = await redis.hget(KEYS.PROMPT, FIELDS.ANALYSIS);
     if (!prompt) return throwCustomError(RETRIEVE_FAILED('prompt'), 500);
 
-    const analysis = await fetchAnalysisFromOpenAI(sentence, model, prompt);
+    const analysis = await fetchAnalysisFromOpenAI(
+      sentence,
+      getFineTunedModel(model),
+      prompt,
+    );
     if (!analysis) return throwCustomError(GENERATE_FAILED('analysis'), 500);
 
     await decrementRedisCounters(

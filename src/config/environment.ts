@@ -9,6 +9,7 @@ export enum EnvVars {
   REDIS_PASSWORD = 'REDIS_PASSWORD',
   REDIS_USERNAME = 'REDIS_USERNAME',
   CORS_ORIGIN = 'CORS_ORIGIN',
+  FINE_TUNED_ID = 'FINE_TUNED_ID',
 }
 
 /**
@@ -24,3 +25,4 @@ export const REDIS_PASSWORD = env[EnvVars.REDIS_PASSWORD];
 export const REDIS_USERNAME = env[EnvVars.REDIS_USERNAME];
 export const OPENAI_API_KEY = env[EnvVars.OPENAI_API_KEY];
 export const CORS_ORIGIN = env[EnvVars.CORS_ORIGIN]?.split(',') ?? [];
+export const FINE_TUNED_ID = env[EnvVars.FINE_TUNED_ID];
