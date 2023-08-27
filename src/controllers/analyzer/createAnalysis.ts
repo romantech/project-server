@@ -28,11 +28,8 @@ export const createAnalysis = [
     const prompt = await redis.hget(KEYS.PROMPT, FIELDS.ANALYSIS);
     if (!prompt) return throwCustomError(RETRIEVE_FAILED('prompt'), 500);
 
-    const analysis = await fetchAnalysisFromOpenAI(
-      sentence,
-      getFineTunedModel(model),
-      prompt,
-    );
+    const fineTuned = getFineTunedModel(model);
+    const analysis = await fetchAnalysisFromOpenAI(sentence, fineTuned, prompt);
     if (!analysis) return throwCustomError(GENERATE_FAILED('analysis'), 500);
 
     await decrementRedisCounters(
