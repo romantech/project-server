@@ -58,6 +58,6 @@ const fetchAnalysisFromOpenAI = async (
       { role: 'system', content: prompt },
       { role: 'user', content: JSON.stringify(sentence) },
     ],
-    temperature: 0.4,
+    temperature: 0.6,
   });
 };
