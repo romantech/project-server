@@ -43,7 +43,7 @@ export const createAnalysis = [
 ];
 
 const getDecrementValue = (model: GPTModel) => {
-  const DECREMENT_VALUES = { [GPTModels.GPT_4]: 3, [GPTModels.GPT_3]: 1 };
+  const DECREMENT_VALUES = { [GPTModels.GPT_4]: 5, [GPTModels.GPT_3]: 1 };
   return DECREMENT_VALUES[model];
 };
 
