@@ -40,7 +40,6 @@ type TConstituent = {
   label: string;                // Grammatical label, e.g., "subject"
   abbreviation: string;         // Abbreviation, e.g., "s"
   type: ConstituentType;        // Type of constituent
-  comment?: string;             // Optional commentary
 };
 
 type TSegment = {
