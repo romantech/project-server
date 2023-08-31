@@ -1,10 +1,10 @@
-import { Configuration, CreateChatCompletionRequest, OpenAIApi } from 'openai';
+import OpenAI from 'openai';
 import { FINE_TUNED_ID, OPENAI_API_KEY } from '@/config';
 import { throwCustomError } from '@/utils';
 import { ERROR_MESSAGES, GPTModels } from '@/constants';
+import { CompletionCreateParamsNonStreaming } from 'openai/src/resources/chat/completions';
 
-const configuration = new Configuration({ apiKey: OPENAI_API_KEY });
-export const openai = new OpenAIApi(configuration);
+export const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
 export const getFineTunedModel = (model: GPTModels) => {
   switch (model) {
@@ -15,13 +15,14 @@ export const getFineTunedModel = (model: GPTModels) => {
   }
 };
 
-export const fetchFromOpenAI = async (request: CreateChatCompletionRequest) => {
+export const fetchFromOpenAI = async (
+  request: CompletionCreateParamsNonStreaming,
+) => {
   const { SERVICE_ERROR } = ERROR_MESSAGES;
 
   try {
-    const completion = await openai.createChatCompletion(request);
-
-    return completion.data.choices[0]?.message?.content || null;
+    const { choices } = await openai.chat.completions.create(request);
+    return choices[0].message.content ?? null;
   } catch (error) {
     throwCustomError(SERVICE_ERROR('OpenAI'), 500);
   }
