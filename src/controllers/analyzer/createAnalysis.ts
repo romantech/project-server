@@ -23,8 +23,7 @@ export const createAnalysis = [
   validateAnalysisCount,
   handleValidationErrors,
   asyncHandler(async (req, res) => {
-    // validateClientIP 미들웨어에서 검증하므로 항상 존재
-    const clientIP = req.clientIP as string;
+    const clientIP = req.clientIP as string; // validateClientIP 미들웨어에서 검증하므로 항상 존재
     const { sentence, model }: RequestBody = req.body;
 
     const analysis = await executeAnalysis(JSON.stringify(sentence), model);
