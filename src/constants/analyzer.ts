@@ -1,10 +1,9 @@
-export enum GPTModels {
-  GPT_3 = 'gpt-3.5-turbo',
-  GPT_4 = 'gpt-4',
-}
+import { GPTModels } from '@/services';
 
-export const GPT_MODEL_LIST = Object.values(GPTModels);
-export type GPTModel = (typeof GPT_MODEL_LIST)[number];
+export const ANALYSIS_DECREMENT_COUNT = {
+  [GPTModels.GPT_3]: 1,
+  [GPTModels.GPT_4]: 5,
+};
 
 export enum RandomSentenceParam {
   SENT_COUNT = 'sent_count',

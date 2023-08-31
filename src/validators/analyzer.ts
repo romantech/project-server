@@ -1,9 +1,6 @@
 import { body, query } from 'express-validator';
-import {
-  ERROR_MESSAGES,
-  GPT_MODEL_LIST,
-  RandomSentenceParam,
-} from '@/constants';
+import { ERROR_MESSAGES, RandomSentenceParam } from '@/constants';
+import { GPT_MODEL_LIST } from '@/services';
 
 const { MISSING_FIELD } = ERROR_MESSAGES;
 const { SENT_COUNT, TOPICS, MAX_CHARS } = RandomSentenceParam;

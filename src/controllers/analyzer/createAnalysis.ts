@@ -1,14 +1,16 @@
-import { ERROR_MESSAGES, GPTModel, GPTModels } from '@/constants';
+import { ANALYSIS_DECREMENT_COUNT, ERROR_MESSAGES } from '@/constants';
 import { asyncHandler, throwCustomError } from '@/utils';
 import {
   ANALYZER_REDIS_SCHEMA,
   decrementRedisCounters,
-  fetchFromOpenAI,
-  getFineTunedModel,
+  getAnalysisModel,
+  GPTModel,
   redis,
 } from '@/services';
 import { checkModelField, checkSentenceField } from '@/validators';
 import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
+import { HumanMessage, SystemMessage } from 'langchain/schema';
+import { ChatOpenAI } from 'langchain/chat_models/openai';
 
 type RequestBody = { sentence: string[]; model: GPTModel };
 
@@ -25,39 +27,34 @@ export const createAnalysis = [
     const clientIP = req.clientIP as string;
     const { sentence, model }: RequestBody = req.body;
 
-    const prompt = await redis.hget(KEYS.PROMPT, FIELDS.ANALYSIS);
-    if (!prompt) return throwCustomError(RETRIEVE_FAILED('prompt'), 500);
-
-    const fineTuned = getFineTunedModel(model);
-    const analysis = await fetchAnalysisFromOpenAI(sentence, fineTuned, prompt);
-    if (!analysis) return throwCustomError(GENERATE_FAILED('analysis'), 500);
+    const analysis = await executeAnalysis(JSON.stringify(sentence), model);
 
     await decrementRedisCounters(
       [KEYS.REMAINING.TOTAL, KEYS.REMAINING.USER(clientIP)],
       FIELDS.ANALYSIS,
-      getDecrementValue(model),
+      ANALYSIS_DECREMENT_COUNT[model],
     );
 
     res.status(200).json(JSON.parse(analysis));
   }),
 ];
 
-const getDecrementValue = (model: GPTModel) => {
-  const DECREMENT_VALUES = { [GPTModels.GPT_4]: 5, [GPTModels.GPT_3]: 1 };
-  return DECREMENT_VALUES[model];
+const retrieveAnalysisPrompt = async () => {
+  const prompt = await redis.hget(KEYS.PROMPT, FIELDS.ANALYSIS);
+  if (!prompt) return throwCustomError(RETRIEVE_FAILED('prompt'), 500);
+
+  return prompt;
 };
 
-const fetchAnalysisFromOpenAI = async (
-  sentence: string[],
-  model: string,
-  prompt: string,
-) => {
-  return fetchFromOpenAI({
-    model,
-    messages: [
-      { role: 'system', content: prompt },
-      { role: 'user', content: JSON.stringify(sentence) },
-    ],
-    temperature: 0.4,
-  });
+const executeAnalysis = async (sentence: string, model: GPTModel) => {
+  const prompt = await retrieveAnalysisPrompt();
+
+  const modelName = getAnalysisModel(model);
+  const chat = new ChatOpenAI({ modelName, temperature: 0.4 });
+
+  const messages = [new SystemMessage(prompt), new HumanMessage(sentence)];
+  const { content } = await chat.call(messages);
+
+  if (!content) return throwCustomError(GENERATE_FAILED('analysis'), 500);
+  return content;
 };
