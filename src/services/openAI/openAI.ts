@@ -1,5 +1,4 @@
-import { FINE_TUNED_ID, logger } from '@/config';
-import { OpenAI } from 'langchain/llms/openai';
+import { FINE_TUNED_ID } from '@/config';
 
 export enum GPTModels {
   GPT_3 = 'gpt-3.5-turbo',
@@ -16,20 +15,5 @@ export const getAnalysisModel = (model: GPTModels) => {
       return FINE_TUNED_ID ?? model;
     default:
       return model;
-  }
-};
-
-export const validateAndFixJSON = async (jsonString: string) => {
-  try {
-    return JSON.parse(jsonString);
-  } catch (e) {
-    logger.warn(`Failed to parse JSON ${e}`);
-    logger.info('Trying to fix JSON');
-
-    const llm = new OpenAI({ temperature: 0, modelName: GPTModels.GPT_3 });
-    const prompt = `Fix JSON format and the results should be returned in JSON: ${jsonString}`;
-
-    const analysis = await llm.predict(prompt);
-    return JSON.parse(analysis);
   }
 };

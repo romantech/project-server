@@ -1,2 +1,2 @@
-export * from './openai';
+export * from './openAI';
 export * from './redis';

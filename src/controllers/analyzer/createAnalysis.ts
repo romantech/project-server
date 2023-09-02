@@ -7,7 +7,7 @@ import {
   GPTModel,
   GPTModels,
   redis,
-  validateAndFixJSON,
+  validateAndRepairJSON,
 } from '@/services';
 import { checkModelField, checkSentenceField } from '@/validators';
 import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
@@ -58,5 +58,5 @@ const executeAnalysis = async (sentence: string, model: GPTModel) => {
   const { content } = await chat.call(messages);
 
   if (!content) return throwCustomError(GENERATE_FAILED('analysis'), 500);
-  return await validateAndFixJSON(content);
+  return await validateAndRepairJSON(content);
 };
