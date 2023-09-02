@@ -5,7 +5,9 @@ import {
   decrementRedisCounters,
   getAnalysisModel,
   GPTModel,
+  GPTModels,
   redis,
+  validateAndFixJSON,
 } from '@/services';
 import { checkModelField, checkSentenceField } from '@/validators';
 import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
@@ -34,19 +36,20 @@ export const createAnalysis = [
       ANALYSIS_DECREMENT_COUNT[model],
     );
 
-    res.status(200).json(JSON.parse(analysis));
+    res.status(200).json(analysis);
   }),
 ];
 
-const retrieveAnalysisPrompt = async () => {
-  const prompt = await redis.hget(KEYS.PROMPT, FIELDS.ANALYSIS);
+const retrieveAnalysisPrompt = async (model: GPTModels) => {
+  const suffix = model === GPTModels.GPT_3 ? '_fine_tuned' : '';
+  const prompt = await redis.hget(KEYS.PROMPT, `${FIELDS.ANALYSIS}${suffix}`);
   if (!prompt) return throwCustomError(RETRIEVE_FAILED('prompt'), 500);
 
   return prompt;
 };
 
 const executeAnalysis = async (sentence: string, model: GPTModel) => {
-  const prompt = await retrieveAnalysisPrompt();
+  const prompt = await retrieveAnalysisPrompt(model);
 
   const modelName = getAnalysisModel(model);
   const chat = new ChatOpenAI({ modelName, temperature: 0.4 });
@@ -55,5 +58,5 @@ const executeAnalysis = async (sentence: string, model: GPTModel) => {
   const { content } = await chat.call(messages);
 
   if (!content) return throwCustomError(GENERATE_FAILED('analysis'), 500);
-  return content;
+  return await validateAndFixJSON(content);
 };

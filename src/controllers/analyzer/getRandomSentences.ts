@@ -55,7 +55,7 @@ const retrieveRandomSentencePrompt = async (query: RandomSentenceParams) => {
 
 const generateRandomSentences = async (query: RandomSentenceParams) => {
   const prompt = await retrieveRandomSentencePrompt(query);
-  const llm = new OpenAI({ temperature: 0.7, modelName: GPTModels.GPT_3 });
+  const llm = new OpenAI({ temperature: 1, modelName: GPTModels.GPT_3 });
 
   const sentences = await llm.predict(prompt);
   if (!sentences) return throwCustomError(GENERATE_FAILED('sentence'), 500);

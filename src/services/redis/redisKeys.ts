@@ -19,7 +19,7 @@ const ANALYZER_KEYS = {
 
 export const ANALYZER_REDIS_SCHEMA = {
   KEYS: ANALYZER_KEYS,
-  FIELDS: AnalyzerFields, // 객체
+  FIELDS: AnalyzerFields,
 } as const;
 
 /**
