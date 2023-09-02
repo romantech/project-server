@@ -14,7 +14,8 @@ const repairJSONManually = (jsonString: string, errorMessage: string) => {
   const errorIndex = errorMessage.match(/\d+/)?.[0];
   if (!errorIndex) return jsonString;
 
-  return jsonString.substring(0, parseInt(errorIndex, 10)) + '}';
+  const repaired = jsonString.substring(0, parseInt(errorIndex, 10)) + '}';
+  return JSON.parse(repaired);
 };
 
 const repairJSONWithOpenAI = async (jsonString: string) => {
@@ -22,7 +23,9 @@ const repairJSONWithOpenAI = async (jsonString: string) => {
 
   const llm = new OpenAI({ temperature: 0, modelName: GPTModels.GPT_3 });
   const prompt = `Fix JSON format and the results should be returned in JSON: ${jsonString}`;
-  return await llm.predict(prompt);
+
+  const repaired = await llm.predict(prompt);
+  return JSON.parse(repaired);
 };
 
 export const validateAndRepairJSON = async (jsonString: string) => {
@@ -33,14 +36,11 @@ export const validateAndRepairJSON = async (jsonString: string) => {
     try {
       const isSyntaxError = e instanceof SyntaxError;
       if (!isSyntaxError) return throwCustomError('Invalid JSON format');
-
-      const manualRepaired = repairJSONManually(jsonString, e.message);
-      return JSON.parse(manualRepaired);
+      return repairJSONManually(jsonString, e.message);
     } catch (repairError) {
       logger.warn(`Failed to parse manually repaired JSON. ${repairError}`);
       try {
-        const openAIRepaired = await repairJSONWithOpenAI(jsonString);
-        return JSON.parse(openAIRepaired);
+        return await repairJSONWithOpenAI(jsonString);
       } catch (openAIError) {
         logger.warn(`Could not fix JSON using OpenAI. ${openAIError}`);
         throwCustomError('Analysis Data Generation Error.', 500);
