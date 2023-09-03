@@ -19,7 +19,7 @@ const repairJSONManually = (jsonString: string, errorMessage: string) => {
 };
 
 const repairJSONWithOpenAI = async (jsonString: string) => {
-  logger.info('Trying to fix JSON using OpenAI');
+  logger.info('Trying to repair JSON using OpenAI');
 
   const llm = new OpenAI({ temperature: 0, modelName: GPTModels.GPT_3 });
   const prompt = `Fix JSON format and the results should be returned in JSON: ${jsonString}`;
@@ -38,11 +38,11 @@ export const validateAndRepairJSON = async (jsonString: string) => {
       if (!isSyntaxError) return throwCustomError('Invalid JSON format');
       return repairJSONManually(jsonString, e.message);
     } catch (repairError) {
-      logger.warn(`Failed to parse manually repaired JSON. ${repairError}`);
+      logger.warn(`Failed to repair JSON manually. ${repairError}`);
       try {
         return await repairJSONWithOpenAI(jsonString);
       } catch (openAIError) {
-        logger.warn(`Could not fix JSON using OpenAI. ${openAIError}`);
+        logger.warn(`Failed to repair JSON using OpenAI. ${openAIError}`);
         throwCustomError('Analysis Data Generation Error.', 500);
       }
     }
