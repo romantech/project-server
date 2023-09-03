@@ -1,7 +1,7 @@
 import { logger } from '@/config';
 import { OpenAI } from 'langchain/llms/openai';
 import { throwCustomError } from '@/utils/customError';
-import { GPTModels } from '@/services';
+import { GPTModel } from '@/services';
 
 /**
  * When using fine-tuned model, there's a recurring issue where unnecessary ']' and '}' are added.
@@ -21,7 +21,7 @@ const repairJSONManually = (jsonString: string, errorMessage: string) => {
 const repairJSONWithOpenAI = async (jsonString: string) => {
   logger.info('Trying to repair JSON using OpenAI');
 
-  const llm = new OpenAI({ temperature: 0, modelName: GPTModels.GPT_3 });
+  const llm = new OpenAI({ temperature: 0, modelName: GPTModel.GPT_3 });
   const prompt = `Fix JSON format and the results should be returned in JSON: ${jsonString}`;
 
   const repaired = await llm.predict(prompt);
@@ -33,12 +33,15 @@ export const validateAndRepairJSON = async (jsonString: string) => {
     return JSON.parse(jsonString);
   } catch (e) {
     logger.warn(`Failed to parse initial JSON. ${e}`);
+
     try {
       const isSyntaxError = e instanceof SyntaxError;
       if (!isSyntaxError) return throwCustomError('Invalid JSON format');
+
       return repairJSONManually(jsonString, e.message);
     } catch (repairError) {
       logger.warn(`Failed to repair JSON manually. ${repairError}`);
+
       try {
         return await repairJSONWithOpenAI(jsonString);
       } catch (openAIError) {
