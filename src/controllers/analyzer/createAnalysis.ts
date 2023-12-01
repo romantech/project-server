@@ -57,5 +57,5 @@ const executeAnalysis = async (sentence: string, model: GPTModel) => {
   const { content } = await chat.call(messages);
 
   if (!content) return throwCustomError(GENERATE_FAILED('analysis'), 500);
-  return await validateAndRepairJSON(content);
+  return await validateAndRepairJSON(`${content}`);
 };
