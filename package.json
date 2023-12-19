@@ -2,6 +2,7 @@
   "name": "project-server",
   "version": "1.0.0",
   "description": "",
+  "packageManager": "pnpm@8.5.1",
   "main": "server.ts",
   "_moduleAliases": {
     "@": "dist"
