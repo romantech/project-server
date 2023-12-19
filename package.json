@@ -1,7 +1,7 @@
 {
   "name": "project-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Personal project server that provides a RESTful API",
   "main": "server.ts",
   "_moduleAliases": {
     "@": "dist"
@@ -14,7 +14,7 @@
     "type-check": "tsc --noEmit"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "keywords": [],
   "author": "Romantech",
