@@ -2,7 +2,6 @@
   "name": "project-server",
   "version": "1.0.0",
   "description": "",
-  "packageManager": "pnpm@8.12.1",
   "main": "server.ts",
   "_moduleAliases": {
     "@": "dist"
@@ -36,7 +35,6 @@
     "openai": "^4.20.1",
     "request-ip": "^3.3.0",
     "tsc": "^2.0.4",
-    "typescript": "^5.3.3",
     "winston": "^3.11.0",
     "winston-daily-rotate-file": "^4.7.1"
   },
@@ -59,6 +57,7 @@
     "eslint-plugin-prettier": "^5.0.1",
     "prettier": "^3.1.0",
     "ts-node-dev": "^2.0.0",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.3.3"
   }
 }
