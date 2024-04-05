@@ -10,8 +10,8 @@ import {
 } from '@/services';
 import { checkModelField, checkSentenceField } from '@/validators';
 import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
-import { HumanMessage, SystemMessage } from 'langchain/schema';
-import { ChatOpenAI } from 'langchain/chat_models/openai';
+import { HumanMessage, SystemMessage } from '@langchain/core/messages';
+import { ChatOpenAI } from '@langchain/openai';
 
 type RequestBody = { sentence: string[]; model: GPTModel };
 
@@ -54,7 +54,7 @@ const executeAnalysis = async (sentence: string, model: GPTModel) => {
   const messages = [new SystemMessage(prompt), new HumanMessage(sentence)];
 
   const chat = new ChatOpenAI({ modelName, temperature });
-  const { content } = await chat.call(messages);
+  const { content } = await chat.invoke(messages);
 
   if (!content) return throwCustomError(GENERATE_FAILED('analysis'), 500);
   return await validateAndRepairJSON(`${content}`);

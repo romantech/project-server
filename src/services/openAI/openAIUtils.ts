@@ -1,5 +1,5 @@
 import { logger } from '@/config';
-import { OpenAI } from 'langchain/llms/openai';
+import { OpenAI } from '@langchain/openai';
 import { throwCustomError } from '@/utils/customError';
 import { GPTModel } from '@/services';
 
@@ -24,7 +24,7 @@ const repairJSONWithOpenAI = async (jsonString: string) => {
   const llm = new OpenAI({ temperature: 0, modelName: GPTModel.GPT_3 });
   const prompt = `Fix JSON format and the results should be returned in JSON: ${jsonString}`;
 
-  const repaired = await llm.predict(prompt);
+  const repaired = await llm.invoke(prompt);
   return JSON.parse(repaired);
 };
 

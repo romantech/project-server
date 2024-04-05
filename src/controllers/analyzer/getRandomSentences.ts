@@ -13,8 +13,8 @@ import {
   checkTopicsField,
 } from '@/validators';
 import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
-import { PromptTemplate } from 'langchain/prompts';
-import { OpenAI } from 'langchain/llms/openai';
+import { PromptTemplate } from '@langchain/core/prompts';
+import { OpenAI } from '@langchain/openai';
 
 const { RETRIEVE_FAILED, GENERATE_FAILED } = ERROR_MESSAGES;
 const { KEYS, FIELDS } = ANALYZER_REDIS_SCHEMA;
@@ -57,7 +57,7 @@ const generateRandomSentences = async (query: RandomSentenceParams) => {
   const prompt = await retrieveRandomSentencePrompt(query);
   const llm = new OpenAI({ temperature: 1, modelName: GPTModel.GPT_3 });
 
-  const sentences = await llm.predict(prompt);
+  const sentences = await llm.invoke(prompt);
   if (!sentences) return throwCustomError(GENERATE_FAILED('sentence'), 500);
 
   return sentences;
