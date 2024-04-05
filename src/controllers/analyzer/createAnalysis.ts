@@ -1,19 +1,20 @@
 import { ANALYSIS_DECREMENT_COUNT, ERROR_MESSAGES } from '@/constants';
 import { asyncHandler, throwCustomError } from '@/utils';
 import {
-  ANALYSIS_MODEL_OPTIONS,
+  AIModelKey,
+  ANALYSIS_MODEL_OPTION,
+  AnalysisModel,
   ANALYZER_REDIS_SCHEMA,
   decrementRedisCounters,
-  GPTModel,
   redis,
   validateAndRepairJSON,
 } from '@/services';
 import { checkModelField, checkSentenceField } from '@/validators';
 import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
-import { ChatOpenAI } from '@langchain/openai';
+import { ChatOpenAI, type ChatOpenAICallOptions } from '@langchain/openai';
 
-type RequestBody = { sentence: string[]; model: GPTModel };
+type RequestBody = { sentence: string[]; model: AnalysisModel };
 
 const { RETRIEVE_FAILED, GENERATE_FAILED } = ERROR_MESSAGES;
 const { KEYS, FIELDS } = ANALYZER_REDIS_SCHEMA;
@@ -39,8 +40,8 @@ export const createAnalysis = [
   }),
 ];
 
-const retrieveAnalysisPrompt = async (model: GPTModel) => {
-  const { promptField } = ANALYSIS_MODEL_OPTIONS[model];
+const retrieveAnalysisPrompt = async (model: AnalysisModel) => {
+  const { promptField } = ANALYSIS_MODEL_OPTION[model];
   const prompt = await redis.hget(KEYS.PROMPT, promptField);
 
   if (!prompt) return throwCustomError(RETRIEVE_FAILED('prompt'), 500);
@@ -48,12 +49,18 @@ const retrieveAnalysisPrompt = async (model: GPTModel) => {
   return prompt;
 };
 
-const executeAnalysis = async (sentence: string, model: GPTModel) => {
-  const { temperature, modelName } = ANALYSIS_MODEL_OPTIONS[model];
+const executeAnalysis = async (sentence: string, model: AnalysisModel) => {
+  const isGPT4 = model === AIModelKey.GPT_4;
+
+  const { temperature, modelName } = ANALYSIS_MODEL_OPTION[model];
   const prompt = await retrieveAnalysisPrompt(model);
   const messages = [new SystemMessage(prompt), new HumanMessage(sentence)];
 
-  const chat = new ChatOpenAI({ modelName, temperature });
+  const callOptions: ChatOpenAICallOptions = {};
+  // json_object response_format only support GPT-4-Turbo
+  if (isGPT4) callOptions.response_format = { type: 'json_object' };
+
+  const chat = new ChatOpenAI({ modelName, temperature }).bind(callOptions);
   const { content } = await chat.invoke(messages);
 
   if (!content) return throwCustomError(GENERATE_FAILED('analysis'), 500);

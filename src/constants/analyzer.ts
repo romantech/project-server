@@ -1,8 +1,8 @@
-import { GPTModel } from '@/services';
+import { AIModelKey } from '@/services';
 
 export const ANALYSIS_DECREMENT_COUNT = {
-  [GPTModel.GPT_3]: 1,
-  [GPTModel.GPT_4]: 5,
+  [AIModelKey.GPT_3_5_FT]: 1,
+  [AIModelKey.GPT_4]: 5,
 };
 
 export enum RandomSentenceParam {

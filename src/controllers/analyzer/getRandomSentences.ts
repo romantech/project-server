@@ -1,9 +1,10 @@
 import { asyncHandler, throwCustomError } from '@/utils';
 import { ParamsDictionary } from 'express-serve-static-core';
 import {
+  AI_MODEL,
+  AIModelKey,
   ANALYZER_REDIS_SCHEMA,
   decrementRedisCounters,
-  GPTModel,
   redis,
 } from '@/services';
 import { ERROR_MESSAGES, RandomSentenceParams } from '@/constants';
@@ -55,7 +56,10 @@ const retrieveRandomSentencePrompt = async (query: RandomSentenceParams) => {
 
 const generateRandomSentences = async (query: RandomSentenceParams) => {
   const prompt = await retrieveRandomSentencePrompt(query);
-  const llm = new OpenAI({ temperature: 1, modelName: GPTModel.GPT_3 });
+  const llm = new OpenAI({
+    temperature: 1,
+    modelName: AI_MODEL[AIModelKey.GPT_3_5],
+  });
 
   const sentences = await llm.invoke(prompt);
   if (!sentences) return throwCustomError(GENERATE_FAILED('sentence'), 500);
