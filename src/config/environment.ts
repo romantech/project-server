@@ -5,12 +5,14 @@
  * */
 import { env } from 'node:process';
 
-export enum EnvVars {
+export enum RequiredEnv { // Required Environment Variables
   PORT = 'PORT',
   NODE_ENV = 'NODE_ENV',
-  CORS_ORIGIN = 'CORS_ORIGIN',
-
   OPENAI_API_KEY = 'OPENAI_API_KEY',
+}
+
+export enum OptionalEnv { // Optional Environment Variables
+  CORS_ORIGIN = 'CORS_ORIGIN',
 
   REDIS_HOST = 'REDIS_HOST',
   REDIS_PORT = 'REDIS_PORT',
@@ -23,24 +25,24 @@ export enum EnvVars {
 }
 
 const loadEnvironment = () => {
-  const isProd = env[EnvVars.NODE_ENV] === 'production';
+  const isProd = env[RequiredEnv.NODE_ENV] === 'production';
   const DEFAULT_SERVER_PORT = 3001;
 
   return {
     isProd,
-    port: isProd ? env[EnvVars.PORT] : DEFAULT_SERVER_PORT,
-    corsOrigins: env[EnvVars.CORS_ORIGIN]?.split(','),
-    openAIKey: env[EnvVars.OPENAI_API_KEY],
+    port: isProd ? Number(env[RequiredEnv.PORT]) : DEFAULT_SERVER_PORT,
+    corsOrigins: env[OptionalEnv.CORS_ORIGIN]?.split(',') ?? [],
+    openAIKey: env[RequiredEnv.OPENAI_API_KEY],
     redis: {
-      host: env[EnvVars.REDIS_HOST],
-      port: Number(env[EnvVars.REDIS_PORT]),
-      password: env[EnvVars.REDIS_PASSWORD],
-      username: env[EnvVars.REDIS_USERNAME],
+      host: env[OptionalEnv.REDIS_HOST],
+      port: Number(env[OptionalEnv.REDIS_PORT]),
+      password: env[OptionalEnv.REDIS_PASSWORD],
+      username: env[OptionalEnv.REDIS_USERNAME],
     },
     modelNames: {
-      gpt_3_5_FT: env[EnvVars.MODEL_GPT_3_5_FT],
-      gpt_3_5: env[EnvVars.MODEL_GPT_3_5],
-      gpt_4: env[EnvVars.MODEL_GPT_4],
+      gpt_3_5_FT: env[OptionalEnv.MODEL_GPT_3_5_FT] ?? 'gpt-3.5-turbo',
+      gpt_3_5: env[OptionalEnv.MODEL_GPT_3_5] ?? 'gpt-3.5-turbo',
+      gpt_4: env[OptionalEnv.MODEL_GPT_4] ?? 'gpt-4',
     },
   } as const;
 };
