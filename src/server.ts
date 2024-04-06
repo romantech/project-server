@@ -1,5 +1,5 @@
 import { setupRoutes } from '@/routes';
-import { createServer, logger, PORT } from '@/config';
+import { createServer, envConfig, logger } from '@/config';
 import { initRedisKeys, redis } from '@/services';
 import { errorHandler, notFoundHandler } from '@/middlewares';
 import { initSchedulers } from '@/schedulers';
@@ -31,8 +31,8 @@ const initServer = async () => {
   app.use(notFoundHandler);
   app.use(errorHandler);
 
-  app.listen(PORT, () => {
-    logger.info(`Server is running on port ${PORT}`);
+  app.listen(envConfig.port, () => {
+    logger.info(`Server is running on port ${envConfig.port}`);
   });
 };
 

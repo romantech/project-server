@@ -1,8 +1,4 @@
-import {
-  MODEL_NAME_GPT_3_5,
-  MODEL_NAME_GPT_3_5_FT,
-  MODEL_NAME_GPT_4,
-} from '@/config';
+import { envConfig } from '@/config';
 import { ANALYZER_REDIS_SCHEMA } from '@/services/redis';
 
 const { FIELDS } = ANALYZER_REDIS_SCHEMA;
@@ -16,9 +12,9 @@ export enum AIModelKey {
 }
 
 export const AI_MODEL = {
-  [AIModelKey.GPT_3_5]: MODEL_NAME_GPT_3_5,
-  [AIModelKey.GPT_3_5_FT]: MODEL_NAME_GPT_3_5_FT,
-  [AIModelKey.GPT_4]: MODEL_NAME_GPT_4,
+  [AIModelKey.GPT_3_5]: envConfig.modelNames.gpt_3_5,
+  [AIModelKey.GPT_3_5_FT]: envConfig.modelNames.gpt_3_5_FT,
+  [AIModelKey.GPT_4]: envConfig.modelNames.gpt_4,
 };
 
 export const ANALYSIS_MODEL_OPTION = {
