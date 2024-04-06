@@ -12,12 +12,26 @@ const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const ignorePrivate = format((info) => (info.private ? false : info));
 
 /** Custom logging format */
-const customFormat = printf(({ level, message, timestamp, ...meta }) => {
-  let result = `[${level}] ${timestamp}: ${message}`;
-  if (Object.keys(meta).length) {
-    result += ` ${JSON.stringify(meta)}`;
+const formatStackTrace = (stack: string, limit = 3) => {
+  const [errorMessage, ...restLines] = stack.split('\n');
+  return [
+    errorMessage.replace(': ', '-'),
+    ...restLines.slice(0, limit).map((line) => `-> ${line}`),
+  ].join('\n');
+};
+
+const customFormat = printf(({ level, message, timestamp, stack, ...meta }) => {
+  let logMessage = `[${timestamp}] [${level}]: ${message}`;
+
+  if (stack?.trim()) logMessage += `\nStack: ${formatStackTrace(stack)}`;
+
+  const metaKeys = Object.keys(meta);
+  if (metaKeys.length > 0) {
+    const metaInfo = JSON.stringify(meta, null, 2);
+    logMessage += `\nMeta: ${metaInfo}`;
   }
-  return result;
+
+  return logMessage;
 });
 
 /** Transform log level to uppercase */

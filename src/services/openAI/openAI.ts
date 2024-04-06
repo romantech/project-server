@@ -1,26 +1,34 @@
-import { FINE_TUNED_ID } from '@/config';
+import { envConfig } from '@/config';
 import { ANALYZER_REDIS_SCHEMA } from '@/services/redis';
 
 const { FIELDS } = ANALYZER_REDIS_SCHEMA;
 
 const FINE_TUNE_SUFFIX = '_fine_tuned';
 
-export enum GPTModel {
-  GPT_3 = 'gpt-3.5-turbo',
+export enum AIModelKey {
+  GPT_3_5 = 'gpt-3.5',
+  GPT_3_5_FT = 'gpt-3.5-ft',
   GPT_4 = 'gpt-4',
 }
 
-export const GPT_MODEL_LIST = Object.values(GPTModel);
+export const AI_MODEL = {
+  [AIModelKey.GPT_3_5]: envConfig.modelNames.gpt_3_5,
+  [AIModelKey.GPT_3_5_FT]: envConfig.modelNames.gpt_3_5_FT,
+  [AIModelKey.GPT_4]: envConfig.modelNames.gpt_4,
+};
 
-export const ANALYSIS_MODEL_OPTIONS = {
-  [GPTModel.GPT_3]: {
+export const ANALYSIS_MODEL_OPTION = {
+  [AIModelKey.GPT_3_5_FT]: {
     promptField: FIELDS.ANALYSIS + FINE_TUNE_SUFFIX,
     temperature: 0.6,
-    modelName: FINE_TUNED_ID ?? GPTModel.GPT_3,
+    modelName: AI_MODEL[AIModelKey.GPT_3_5_FT],
   },
-  [GPTModel.GPT_4]: {
+  [AIModelKey.GPT_4]: {
     promptField: FIELDS.ANALYSIS,
     temperature: 0.4,
-    modelName: GPTModel.GPT_4,
+    modelName: AI_MODEL[AIModelKey.GPT_4],
   },
-} as const;
+};
+
+export const ANALYSIS_MODEL = Object.keys(ANALYSIS_MODEL_OPTION);
+export type AnalysisModel = keyof typeof ANALYSIS_MODEL_OPTION;
