@@ -15,7 +15,7 @@ const ignorePrivate = format((info) => (info.private ? false : info));
 const formatStackTrace = (stack: string, limit = 3) => {
   const [errorMessage, ...restLines] = stack.split('\n');
   return [
-    errorMessage.replace(': ', '-'),
+    errorMessage.replace(/(\w+):/g, '[$1]'), // "Error: This is ..." -> "[Error] This is ..."
     ...restLines.slice(0, limit).map((line) => `-> ${line}`),
   ].join('\n');
 };
