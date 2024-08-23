@@ -1,4 +1,5 @@
 # Syntax Analyzer
+
 Below are the API specifications for the [Syntax Analyzer](https://github.com/romantech/syntax-analyzer) project, offering features such as syntax analysis and random sentence generation.
 
 ### Analyze Sentence Syntax
@@ -13,15 +14,16 @@ POST /analyzer
 
 #### Request Body
 
-| Field | Type | Options | Required | Description | Constraints |
-| --- | --- | --- | --- | --- | --- |
-| `model` | `string` | `gpt-3.5`, `gpt-4` | Yes | AI model for analysis | One of: `gpt-3.5`, `gpt-4` |
-| `sentence` | `Array<string>` | N/A | Yes | Tokens for analysis | Range: 2~20 tokens |
+| Field      | Type            | Options                       | Required | Description           | Constraints                           |
+| ---------- | --------------- | ----------------------------- | -------- | --------------------- | ------------------------------------- |
+| `model`    | `string`        | `gpt-4o-ft`, `gpt-4o-mini-ft` | Yes      | AI model for analysis | One of: `gpt-4o-ft`, `gpt-4o-mini-ft` |
+| `sentence` | `Array<string>` | N/A                           | Yes      | Tokens for analysis   | Range: 2~20 tokens                    |
 
 > Example Request
+
 ```json
 {
-  "model": "gpt-4",
+  "model": "gpt-4o-mini-ft",
   "sentence": ["My", "name", "is", "John", "."]
 }
 ```
@@ -29,34 +31,35 @@ POST /analyzer
 #### Response
 
 > Analysis Data Model
+
 ```tsx
 type AnalysisSource = 'user' | 'sample';
 type ISODateString = string;
-type ConstituentType = 'clause' | 'phrase' | 'token'
+type ConstituentType = 'clause' | 'phrase' | 'token';
 
 type TConstituent = {
-  id: number;                   // Random 9-digit number
-  elementId: number;            // Constituent ID
-  label: string;                // Grammatical label, e.g., "subject"
-  abbreviation: string;         // Abbreviation, e.g., "s"
-  type: ConstituentType;        // Type of constituent
+  id: number; // Random 9-digit number
+  elementId: number; // Constituent ID
+  label: string; // Grammatical label, e.g., "subject"
+  abbreviation: string; // Abbreviation, e.g., "s"
+  type: ConstituentType; // Type of constituent
 };
 
 type TSegment = {
-  id: number;                   // Random 9-digit number
-  begin: number;                // Start index
-  end: number;                  // End index
+  id: number; // Random 9-digit number
+  begin: number; // Start index
+  end: number; // End index
   constituents: TConstituent[]; // Segment constituents
-  children: TSegment[];         // Sub-segments
+  children: TSegment[]; // Sub-segments
 };
 
 type TAnalysis = {
-  id: string;                   // Random 21-byte string
-  source: AnalysisSource;       // Data source
-  createdAt: ISODateString;     // ISO 8601 timestamp
-  sentence: string[];           // Tokenized sentence
-  rootSegment: TSegment;        // Root segment
-  isAnalyzedByGPT: boolean;     // AI-analyzed status
+  id: string; // Random 21-byte string
+  source: AnalysisSource; // Data source
+  createdAt: ISODateString; // ISO 8601 timestamp
+  sentence: string[]; // Tokenized sentence
+  rootSegment: TSegment; // Root segment
+  isAnalyzedByGPT: boolean; // AI-analyzed status
 };
 ```
 
@@ -164,11 +167,11 @@ GET /analyzer/random-sentences
 
 #### Request Parameters
 
-| Field | Type | Required | Default | Description | Constraints |
-| --- | --- | --- | --- | --- | --- |
-| `sent_count` | `number` | No | `5` | Quantity of sentences | Range: 1~5 |
-| `max_chars` | `number` | No | `80` | Character limit per sentence | Range: 10~80 |
-| `topics` | `Array<string>` | No | `[]` | Topics to include in sentences | Max 3 topics |
+| Field        | Type            | Required | Default | Description                    | Constraints  |
+| ------------ | --------------- | -------- | ------- | ------------------------------ | ------------ |
+| `sent_count` | `number`        | No       | `5`     | Quantity of sentences          | Range: 1~5   |
+| `max_chars`  | `number`        | No       | `80`    | Character limit per sentence   | Range: 10~80 |
+| `topics`     | `Array<string>` | No       | `[]`    | Topics to include in sentences | Max 3 topics |
 
 #### Response
 
