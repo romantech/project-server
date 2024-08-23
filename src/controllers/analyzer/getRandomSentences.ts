@@ -61,8 +61,8 @@ const retrieveRandomSentencePrompt = async (query: RandomSentenceParams) => {
 const generateRandomSentences = async (query: RandomSentenceParams) => {
   const prompt = await retrieveRandomSentencePrompt(query);
   const model = new ChatOpenAI({
-    temperature: 1,
-    modelName: AI_MODEL[AIModelKey.GPT_4O_MINI],
+    temperature: 0.8,
+    modelName: AI_MODEL[AIModelKey.GPT_4O],
   }).withStructuredOutput(sentencesSchema);
 
   const { sentences } = await model.invoke(prompt);

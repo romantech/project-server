@@ -19,7 +19,7 @@ export const checkModelField = body('model')
 
 // 생성할 영어 문장 갯수 optional
 export const checkSentenceCountField = query(SENT_COUNT)
-  .default(5)
+  .default(3)
   .isInt({ min: 1, max: 5 })
   .withMessage('Sentence count must be between 1 and 5.');
 
