@@ -169,7 +169,7 @@ GET /analyzer/random-sentences
 
 | Field        | Type            | Required | Default | Description                    | Constraints  |
 | ------------ | --------------- | -------- | ------- | ------------------------------ | ------------ |
-| `sent_count` | `number`        | No       | `5`     | Quantity of sentences          | Range: 1~5   |
+| `sent_count` | `number`        | No       | `3`     | Quantity of sentences          | Range: 1~5   |
 | `max_chars`  | `number`        | No       | `80`    | Character limit per sentence   | Range: 10~80 |
 | `topics`     | `Array<string>` | No       | `[]`    | Topics to include in sentences | Max 3 topics |
 
