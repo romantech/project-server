@@ -1,8 +1,9 @@
 import { AIModelKey } from '@/services';
+import { z } from 'zod';
 
 export const ANALYSIS_DECREMENT_COUNT = {
-  [AIModelKey.GPT_3_5_FT]: 1,
-  [AIModelKey.GPT_4]: 5,
+  [AIModelKey.GPT_4O_MINI_FT]: 1,
+  [AIModelKey.GPT_4O_FT]: 2,
 };
 
 export enum RandomSentenceParam {
@@ -19,3 +20,7 @@ export type RandomSentenceParams = {
   /** 각 문장의 최대 글자 수 */
   [RandomSentenceParam.MAX_CHARS]: string;
 };
+
+export const sentencesSchema = z.object({
+  sentences: z.array(z.string()).describe('sentences'),
+});

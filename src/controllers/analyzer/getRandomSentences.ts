@@ -7,17 +7,21 @@ import {
   decrementRedisCounters,
   redis,
 } from '@/services';
-import { ERROR_MESSAGES, RandomSentenceParams } from '@/constants';
+import {
+  ERROR_MESSAGES,
+  RandomSentenceParams,
+  sentencesSchema,
+} from '@/constants';
 import {
   checkMaxCharField,
   checkSentenceCountField,
   checkTopicsField,
 } from '@/validators';
 import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
-import { PromptTemplate } from '@langchain/core/prompts';
-import { OpenAI } from '@langchain/openai';
+import { ChatPromptTemplate } from '@langchain/core/prompts';
+import { ChatOpenAI } from '@langchain/openai';
 
-const { RETRIEVE_FAILED, GENERATE_FAILED } = ERROR_MESSAGES;
+const { RETRIEVE_FAILED } = ERROR_MESSAGES;
 const { KEYS, FIELDS } = ANALYZER_REDIS_SCHEMA;
 const DECREMENT_COUNT = 1;
 
@@ -39,7 +43,7 @@ export const getRandomSentences = [
         DECREMENT_COUNT,
       );
 
-      res.status(200).json(JSON.parse(sentences));
+      res.status(200).json(sentences);
     },
   ),
 ];
@@ -49,20 +53,18 @@ const retrieveRandomSentencePrompt = async (query: RandomSentenceParams) => {
   if (!template) return throwCustomError(RETRIEVE_FAILED('template'), 500);
 
   const topics = query.topics.join(', ');
-  const prompt = PromptTemplate.fromTemplate(template);
+  const prompt = ChatPromptTemplate.fromTemplate(template);
 
   return await prompt.format({ ...query, topics });
 };
 
 const generateRandomSentences = async (query: RandomSentenceParams) => {
   const prompt = await retrieveRandomSentencePrompt(query);
-  const llm = new OpenAI({
+  const model = new ChatOpenAI({
     temperature: 1,
-    modelName: AI_MODEL[AIModelKey.GPT_3_5],
-  });
+    modelName: AI_MODEL[AIModelKey.GPT_4O_MINI],
+  }).withStructuredOutput(sentencesSchema);
 
-  const sentences = await llm.invoke(prompt);
-  if (!sentences) return throwCustomError(GENERATE_FAILED('sentence'), 500);
-
+  const { sentences } = await model.invoke(prompt);
   return sentences;
 };

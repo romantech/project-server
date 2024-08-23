@@ -19,9 +19,10 @@ export enum OptionalEnv { // Optional Environment Variables
   REDIS_PASSWORD = 'REDIS_PASSWORD',
   REDIS_USERNAME = 'REDIS_USERNAME',
 
-  MODEL_GPT_3_5_FT = 'MODEL_GPT_3_5_FT',
-  MODEL_GPT_3_5 = 'MODEL_GPT_3_5',
-  MODEL_GPT_4 = 'MODEL_GPT_4',
+  MODEL_GPT_4O = 'MODEL_GPT_4O',
+  MODEL_GPT_4O_MINI = 'MODEL_GPT_4O_MINI',
+  MODEL_GPT_4O_FT = 'MODEL_GPT_4O_FT',
+  MODEL_GPT_4O_MINI_FT = 'MODEL_GPT_4O_MINI_FT',
 }
 
 const loadEnvironment = () => {
@@ -40,9 +41,10 @@ const loadEnvironment = () => {
       username: env[OptionalEnv.REDIS_USERNAME],
     },
     modelNames: {
-      gpt_3_5_FT: env[OptionalEnv.MODEL_GPT_3_5_FT] ?? 'gpt-3.5-turbo',
-      gpt_3_5: env[OptionalEnv.MODEL_GPT_3_5] ?? 'gpt-3.5-turbo',
-      gpt_4: env[OptionalEnv.MODEL_GPT_4] ?? 'gpt-4',
+      GPT_4O: env[OptionalEnv.MODEL_GPT_4O] ?? 'gpt-4o',
+      GPT_4O_MINI: env[OptionalEnv.MODEL_GPT_4O_MINI] ?? 'gpt-4o-mini',
+      GPT_4O_FT: env[OptionalEnv.MODEL_GPT_4O_FT] ?? 'gpt-4o',
+      GPT_4O_MINI_FT: env[OptionalEnv.MODEL_GPT_4O_MINI_FT] ?? 'gpt-4o-mini',
     },
   } as const;
 };

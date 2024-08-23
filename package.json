@@ -21,7 +21,7 @@
   "author": "Romantech",
   "license": "ISC",
   "dependencies": {
-    "@langchain/openai": "^0.0.26",
+    "@langchain/openai": "^0.2.7",
     "@types/request-ip": "^0.0.41",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
@@ -30,14 +30,15 @@
     "express-validator": "^7.0.1",
     "helmet": "^7.1.0",
     "ioredis": "^5.3.2",
-    "langchain": "^0.1.31",
+    "langchain": "^0.2.16",
     "module-alias": "^2.2.3",
     "morgan": "^1.10.0",
     "node-schedule": "^2.1.1",
     "openai": "^4.33.0",
     "request-ip": "^3.3.0",
     "winston": "^3.11.0",
-    "winston-daily-rotate-file": "^5.0.0"
+    "winston-daily-rotate-file": "^5.0.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/compression": "^1.7.5",
