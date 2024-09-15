@@ -33,7 +33,7 @@ export const getRandomSentences = [
   handleValidationErrors,
   asyncHandler<ParamsDictionary, unknown, unknown, RandomSentenceParams>(
     async (req, res) => {
-      const clientIP = req.clientIP as string; // validateClientIP 미들웨어에서 검증하므로 항상 존재
+      const clientIP = req.clientIP!; // validateClientIP 미들웨어에서 검증하므로 항상 존재
 
       const sentences = await generateRandomSentences(req.query);
 
