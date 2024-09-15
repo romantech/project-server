@@ -2,7 +2,7 @@
   "name": "project-server",
   "version": "1.0.0",
   "description": "Personal project server that provides a RESTful API",
-  "packageManager": "yarn@1.22.19",
+  "packageManager": "yarn@1.22.22",
   "main": "server.ts",
   "_moduleAliases": {
     "@": "dist"
