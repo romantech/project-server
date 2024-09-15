@@ -13,7 +13,7 @@ export const validateAnalysisCount = [
   validateClientIP,
   asyncHandler(async (req, res, next) => {
     // validateClientIP 미들웨어에서 검증하므로 clientIP 항상 존재
-    const clientIP = req.clientIP as string;
+    const clientIP = req.clientIP!;
     const fieldName = getFieldName(req.path);
 
     const rawTotal = await redis.hget(REMAINING.TOTAL, fieldName);

@@ -7,7 +7,7 @@ import prettierPluginRecommended from 'eslint-plugin-prettier/recommended';
 
 export default tseslint.config(
   pluginJs.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
+  ...tseslint.configs.recommended,
   ...tseslint.configs.stylisticTypeChecked,
   prettierPluginRecommended,
 
