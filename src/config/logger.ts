@@ -23,10 +23,11 @@ const formatStackTrace = (stack: string, limit = 3) => {
 const customFormat = printf(({ level, message, timestamp, stack, ...meta }) => {
   let logMessage = `[${timestamp}] [${level}]: ${message}`;
 
-  if (stack?.trim()) logMessage += `\nStack: ${formatStackTrace(stack)}`;
+  if (typeof stack === 'string' && stack.trim().length > 0) {
+    logMessage += `\nStack: ${formatStackTrace(stack)}`;
+  }
 
-  const metaKeys = Object.keys(meta);
-  if (metaKeys.length > 0) {
+  if (Object.keys(meta).length > 0) {
     const metaInfo = JSON.stringify(meta, null, 2);
     logMessage += `\nMeta: ${metaInfo}`;
   }

@@ -1,6 +1,6 @@
 import { AIModelKey } from '@/services';
 import { z } from 'zod';
-import { ParsedQs } from 'qs';
+import { ParsedQs } from 'openai/internal/qs/types';
 
 export const ANALYSIS_DECREMENT_COUNT = {
   [AIModelKey.GPT_4O_MINI_FT]: 1,
