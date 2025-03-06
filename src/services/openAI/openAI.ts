@@ -1,5 +1,6 @@
 import { envConfig } from '@/config';
 import { ANALYZER_REDIS_SCHEMA } from '@/services/redis';
+import { ChatOpenAIFields } from '@langchain/openai';
 
 const { FIELDS } = ANALYZER_REDIS_SCHEMA;
 
@@ -14,24 +15,29 @@ export enum AIModelKey {
 }
 
 export const AI_MODEL = {
-  [AIModelKey.GPT_4O]: envConfig.modelNames.GPT_4O,
-  [AIModelKey.GPT_4O_MINI]: envConfig.modelNames.GPT_4O_MINI,
-  [AIModelKey.GPT_4O_FT]: envConfig.modelNames.GPT_4O_FT,
-  [AIModelKey.GPT_4O_MINI_FT]: envConfig.modelNames.GPT_4O_MINI_FT,
-};
+  [AIModelKey.GPT_4O]: envConfig.models.GPT_4O,
+  [AIModelKey.GPT_4O_MINI]: envConfig.models.GPT_4O_MINI,
+  [AIModelKey.GPT_4O_FT]: envConfig.models.GPT_4O_FT,
+  [AIModelKey.GPT_4O_MINI_FT]: envConfig.models.GPT_4O_MINI_FT,
+} as const;
 
 export const ANALYSIS_MODEL_OPTION = {
   [AIModelKey.GPT_4O_FT]: {
     promptField: FIELDS.ANALYSIS + FINE_TUNE_SUFFIX,
     temperature: 0.6,
-    modelName: AI_MODEL[AIModelKey.GPT_4O_FT],
+    model: AI_MODEL[AIModelKey.GPT_4O_FT],
   },
   [AIModelKey.GPT_4O_MINI_FT]: {
     promptField: FIELDS.ANALYSIS + FINE_TUNE_SUFFIX,
     temperature: 0.6,
-    modelName: AI_MODEL[AIModelKey.GPT_4O_MINI_FT],
+    model: AI_MODEL[AIModelKey.GPT_4O_MINI_FT],
   },
-};
+} as const;
+
+export const RANDOM_SENTENCE_CONFIG = {
+  temperature: 0.8,
+  model: AI_MODEL[AIModelKey.GPT_4O_MINI],
+} satisfies ChatOpenAIFields;
 
 export const ANALYSIS_MODEL = Object.keys(ANALYSIS_MODEL_OPTION);
 export type AnalysisModel = keyof typeof ANALYSIS_MODEL_OPTION;

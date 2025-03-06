@@ -10,9 +10,9 @@ export const jsonOutputParser = new JsonOutputParser();
 const repairJSONWithOpenAI = async (jsonString: string) => {
   logger.info('Trying to repair JSON using OpenAI');
 
-  const model = new ChatOpenAI({
+  const llm = new ChatOpenAI({
     temperature: 0,
-    modelName: AI_MODEL[AIModelKey.GPT_4O_MINI],
+    model: AI_MODEL[AIModelKey.GPT_4O_MINI],
     modelKwargs: { response_format: { type: 'json_object' } },
   });
 
@@ -20,7 +20,7 @@ const repairJSONWithOpenAI = async (jsonString: string) => {
     'Fix JSON format and the results should be returned in JSON: {jsonString}',
   );
 
-  const chain = prompt.pipe(model).pipe(jsonOutputParser);
+  const chain = prompt.pipe(llm).pipe(jsonOutputParser);
   return await chain.invoke({ jsonString });
 };
 

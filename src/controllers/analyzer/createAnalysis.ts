@@ -51,17 +51,17 @@ const retrieveAnalysisPrompt = async (model: AnalysisModel) => {
   return prompt;
 };
 
-const executeAnalysis = async (sentence: string, model: AnalysisModel) => {
-  const { temperature, modelName } = ANALYSIS_MODEL_OPTION[model];
-  const prompt = await retrieveAnalysisPrompt(model);
+const executeAnalysis = async (sentence: string, modelKey: AnalysisModel) => {
+  const { temperature, model } = ANALYSIS_MODEL_OPTION[modelKey];
+  const prompt = await retrieveAnalysisPrompt(modelKey);
   const messages = [new SystemMessage(prompt), new HumanMessage(sentence)];
 
-  const chatModel = new ChatOpenAI({
-    modelName,
+  const llm = new ChatOpenAI({
+    model,
     temperature,
     modelKwargs: { response_format: { type: 'json_object' } },
   });
 
-  const result = await chatModel.invoke(messages);
+  const result = await llm.invoke(messages);
   return jsonOutputParser.invoke(result);
 };

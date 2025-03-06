@@ -40,7 +40,7 @@ const loadEnvironment = () => {
       password: env[OptionalEnv.REDIS_PASSWORD],
       username: env[OptionalEnv.REDIS_USERNAME],
     },
-    modelNames: {
+    models: {
       GPT_4O: env[OptionalEnv.MODEL_GPT_4O] ?? 'gpt-4o',
       GPT_4O_MINI: env[OptionalEnv.MODEL_GPT_4O_MINI] ?? 'gpt-4o-mini',
       GPT_4O_FT: env[OptionalEnv.MODEL_GPT_4O_FT] ?? 'gpt-4o',
