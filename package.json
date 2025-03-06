@@ -22,7 +22,7 @@
   "license": "ISC",
   "dependencies": {
     "@langchain/core": "^0.3.18",
-    "@langchain/openai": "^0.3.13",
+    "@langchain/openai": "^0.4.4",
     "@types/request-ip": "^0.0.41",
     "compression": "^1.7.5",
     "cookie-parser": "^1.4.7",
