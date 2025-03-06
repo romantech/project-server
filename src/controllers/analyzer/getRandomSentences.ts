@@ -1,10 +1,9 @@
 import { asyncHandler, throwCustomError } from '@/utils';
 import { ParamsDictionary } from 'express-serve-static-core';
 import {
-  AI_MODEL,
-  AIModelKey,
   ANALYZER_REDIS_SCHEMA,
   decrementRedisCounters,
+  RANDOM_SENTENCE_CONFIG,
   redis,
 } from '@/services';
 import {
@@ -52,19 +51,16 @@ const retrieveRandomSentencePrompt = async (query: RandomSentenceParams) => {
   const template = await redis.hget(KEYS.PROMPT, FIELDS.RANDOM_SENTENCE);
   if (!template) return throwCustomError(RETRIEVE_FAILED('template'), 500);
 
-  const topics = query.topics.join(', ');
   const prompt = ChatPromptTemplate.fromTemplate(template);
-
-  return await prompt.format({ ...query, topics });
+  return await prompt.invoke({ ...query, topics: query.topics });
 };
 
 const generateRandomSentences = async (query: RandomSentenceParams) => {
   const prompt = await retrieveRandomSentencePrompt(query);
-  const model = new ChatOpenAI({
-    temperature: 0.8,
-    modelName: AI_MODEL[AIModelKey.GPT_4O],
-  }).withStructuredOutput(sentencesSchema);
+  const llm = new ChatOpenAI(RANDOM_SENTENCE_CONFIG).withStructuredOutput(
+    sentencesSchema,
+  );
 
-  const { sentences } = await model.invoke(prompt);
+  const { sentences } = await llm.invoke(prompt);
   return sentences;
 };

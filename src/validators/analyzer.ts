@@ -20,6 +20,7 @@ export const checkModelField = body('model')
 // 생성할 영어 문장 갯수 optional
 export const checkSentenceCountField = query(SENT_COUNT)
   .default(3)
+  .toInt()
   .isInt({ min: 1, max: 5 })
   .withMessage('Sentence count must be between 1 and 5.');
 
@@ -32,5 +33,6 @@ export const checkTopicsField = query(TOPICS)
 // 각 문장의 최대 글자수 optional
 export const checkMaxCharField = query(MAX_CHARS)
   .default(80)
+  .toInt()
   .isInt({ min: 10, max: 80 })
   .withMessage('Max characters must be between 10 and 80.');
