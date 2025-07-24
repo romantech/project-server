@@ -10,6 +10,6 @@ export class CustomError extends Error {
   }
 }
 
-export const throwCustomError = (message: string, status: number = 500) => {
+export const throwCustomError = (message: string, status = 500): never => {
   throw new CustomError(status, message);
 };

@@ -35,7 +35,7 @@ export const ANALYSIS_MODEL_OPTION = {
 } as const;
 
 export const RANDOM_SENTENCE_CONFIG = {
-  temperature: 0.8,
+  temperature: 1,
   model: AI_MODEL[AIModelKey.GPT_4O_MINI],
 } satisfies ChatOpenAIFields;
 
