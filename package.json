@@ -31,6 +31,8 @@
     "express-validator": "^7.2.1",
     "helmet": "^8.0.0",
     "ioredis": "^5.6.0",
+    "jsonrepair": "^3.13.0",
+    "langchain": "^0.3.30",
     "module-alias": "^2.2.3",
     "morgan": "^1.10.0",
     "node-schedule": "^2.1.1",

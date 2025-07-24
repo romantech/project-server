@@ -4,14 +4,15 @@ import {
   ANALYSIS_MODEL_OPTION,
   AnalysisModel,
   ANALYZER_REDIS_SCHEMA,
+  createJSONChatOpenAI,
   decrementRedisCounters,
-  jsonOutputParser,
   redis,
+  validateAndRepairJSON,
 } from '@/services';
 import { checkModelField, checkSentenceField } from '@/validators';
 import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
-import { ChatOpenAI } from '@langchain/openai';
+import { StringOutputParser } from '@langchain/core/output_parsers';
 
 interface RequestBody {
   sentence: string[];
@@ -56,12 +57,13 @@ const executeAnalysis = async (sentence: string, modelKey: AnalysisModel) => {
   const prompt = await retrieveAnalysisPrompt(modelKey);
   const messages = [new SystemMessage(prompt), new HumanMessage(sentence)];
 
-  const llm = new ChatOpenAI({
-    model,
-    temperature,
-    modelKwargs: { response_format: { type: 'json_object' } },
-  });
+  const llm = createJSONChatOpenAI({ model, temperature });
 
-  const result = await llm.invoke(messages);
-  return jsonOutputParser.invoke(result);
+  // StringOutputParser를 LLM에 연결하여 새로운 체인 생성
+  // StringOutputParser는 LLM 응답에서 content 속성만 추출하여 문자열(string)로 반환
+  const chain = llm.pipe(new StringOutputParser());
+  // invoke 결과는 AIMessage 객체 대신 문자열 content 바로 반환
+  const stringContent = await chain.invoke(messages);
+
+  return await validateAndRepairJSON(stringContent);
 };
