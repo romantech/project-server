@@ -21,7 +21,7 @@
   "author": "Romantech",
   "license": "ISC",
   "dependencies": {
-    "@langchain/core": "^0.3.79",
+    "@langchain/core": "^0.3.80",
     "@langchain/openai": "^0.4.9",
     "@types/request-ip": "^0.0.41",
     "compression": "^1.8.1",
