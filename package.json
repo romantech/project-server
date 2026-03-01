@@ -15,7 +15,7 @@
     "type-check": "tsc --noEmit"
   },
   "engines": {
-    "node": "20.*"
+    "node": "24.*"
   },
   "keywords": [],
   "author": "Romantech",
@@ -26,14 +26,14 @@
     "@types/request-ip": "^0.0.41",
     "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
+    "cors": "^2.8.6",
     "express": "^4.22.1",
     "express-validator": "^7.3.1",
     "helmet": "^8.1.0",
-    "ioredis": "^5.8.2",
-    "jsonrepair": "^3.13.1",
+    "ioredis": "^5.10.0",
+    "jsonrepair": "^3.13.2",
     "langchain": "^0.3.37",
-    "module-alias": "^2.2.3",
+    "module-alias": "^2.3.4",
     "morgan": "^1.10.1",
     "node-schedule": "^2.1.1",
     "openai": "^4.104.0",
@@ -43,26 +43,26 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
+    "@eslint/js": "^9.39.3",
     "@types/compression": "^1.8.1",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
-    "@types/express-serve-static-core": "^5.1.0",
+    "@types/express-serve-static-core": "^5.1.1",
     "@types/module-alias": "^2.0.4",
     "@types/morgan": "^1.9.10",
-    "@types/node": "^22.19.1",
+    "@types/node": "^22.19.13",
     "@types/node-schedule": "^2.1.8",
     "dotenv": "^16.6.1",
-    "eslint": "^9.39.1",
+    "eslint": "^9.39.3",
     "eslint-config-prettier": "^9.1.2",
     "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-prettier": "^5.5.5",
     "globals": "^15.15.0",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.1",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.1"
+    "typescript-eslint": "^8.56.1"
   }
 }
