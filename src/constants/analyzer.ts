@@ -3,8 +3,8 @@ import { z } from 'zod';
 import { Query } from 'express-serve-static-core';
 
 export const ANALYSIS_DECREMENT_COUNT = {
-  [AIModelKey.GPT_4O_MINI_FT]: 1,
-  [AIModelKey.GPT_4O_FT]: 2,
+  [AIModelKey.FAST_FT]: 1,
+  [AIModelKey.PRIMARY_FT]: 2,
 };
 
 export enum RandomSentenceParam {

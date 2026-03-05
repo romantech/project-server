@@ -5,13 +5,15 @@
  * */
 import { env } from 'node:process';
 
-export enum RequiredEnv { // Required Environment Variables
+// Required Environment Variables
+export enum RequiredEnv {
   PORT = 'PORT',
   NODE_ENV = 'NODE_ENV',
   OPENAI_API_KEY = 'OPENAI_API_KEY',
 }
 
-export enum OptionalEnv { // Optional Environment Variables
+// Optional Environment Variables
+export enum OptionalEnv {
   CORS_ORIGIN = 'CORS_ORIGIN',
 
   REDIS_HOST = 'REDIS_HOST',
@@ -19,10 +21,10 @@ export enum OptionalEnv { // Optional Environment Variables
   REDIS_PASSWORD = 'REDIS_PASSWORD',
   REDIS_USERNAME = 'REDIS_USERNAME',
 
-  MODEL_GPT_4O = 'MODEL_GPT_4O',
-  MODEL_GPT_4O_MINI = 'MODEL_GPT_4O_MINI',
-  MODEL_GPT_4O_FT = 'MODEL_GPT_4O_FT',
-  MODEL_GPT_4O_MINI_FT = 'MODEL_GPT_4O_MINI_FT',
+  MODEL_PRIMARY = 'MODEL_PRIMARY',
+  MODEL_FAST = 'MODEL_FAST',
+  MODEL_PRIMARY_FT = 'MODEL_PRIMARY_FT',
+  MODEL_FAST_FT = 'MODEL_FAST_FT',
 }
 
 const loadEnvironment = () => {
@@ -41,10 +43,10 @@ const loadEnvironment = () => {
       username: env[OptionalEnv.REDIS_USERNAME],
     },
     models: {
-      GPT_4O: env[OptionalEnv.MODEL_GPT_4O] ?? 'gpt-4o',
-      GPT_4O_MINI: env[OptionalEnv.MODEL_GPT_4O_MINI] ?? 'gpt-4o-mini',
-      GPT_4O_FT: env[OptionalEnv.MODEL_GPT_4O_FT] ?? 'gpt-4o',
-      GPT_4O_MINI_FT: env[OptionalEnv.MODEL_GPT_4O_MINI_FT] ?? 'gpt-4o-mini',
+      PRIMARY: env[OptionalEnv.MODEL_PRIMARY],
+      FAST: env[OptionalEnv.MODEL_FAST],
+      PRIMARY_FT: env[OptionalEnv.MODEL_PRIMARY_FT],
+      FAST_FT: env[OptionalEnv.MODEL_FAST_FT],
     },
   } as const;
 };
