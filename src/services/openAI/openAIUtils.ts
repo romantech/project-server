@@ -4,7 +4,6 @@ import { throwCustomError } from '@/utils/customError';
 import { AI_MODEL, AIModelKey } from '@/services';
 import { JsonOutputParser } from '@langchain/core/output_parsers';
 import { jsonrepair } from 'jsonrepair';
-import { OutputFixingParser } from 'langchain/output_parsers';
 
 export const jsonOutputParser = new JsonOutputParser();
 
@@ -33,18 +32,25 @@ const strategies: RepairStrategy[] = [
     },
   },
   {
-    name: 'OutputFixingParser',
+    name: 'LLM Repair',
     execute: async (json) => {
       const jsonOutputLLM = createJSONChatOpenAI({
         temperature: 0,
         model: AI_MODEL[AIModelKey.GPT_4O_MINI],
       });
 
-      const outputParser = OutputFixingParser.fromLLM(
-        jsonOutputLLM,
-        jsonOutputParser,
-      );
-      return await outputParser.parse(json);
+      const prompt = [
+        'You are a JSON repair assistant.',
+        'Fix the given invalid JSON string.',
+        'Return only valid JSON with no markdown or extra explanation.',
+        '',
+        `Format instructions:\n${jsonOutputParser.getFormatInstructions()}`,
+        '',
+        `Invalid JSON:\n${json}`,
+      ].join('\n');
+
+      const response = await jsonOutputLLM.invoke(prompt);
+      return await jsonOutputParser.parse(response.text);
     },
   },
 ];
