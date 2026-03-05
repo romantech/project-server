@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Personal project server that provides a RESTful API",
   "main": "server.ts",
+  "packageManager": "pnpm@10.30.3",
   "_moduleAliases": {
     "@": "dist"
   },
