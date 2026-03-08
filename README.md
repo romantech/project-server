@@ -14,19 +14,25 @@ POST /analyzer
 
 #### Request Body
 
-| Field      | Type            | Options                       | Required | Description           | Constraints                           |
-| ---------- | --------------- | ----------------------------- | -------- | --------------------- | ------------------------------------- |
-| `model`    | `string`        | `gpt-4o-ft`, `gpt-4o-mini-ft` | Yes      | AI model for analysis | One of: `gpt-4o-ft`, `gpt-4o-mini-ft` |
-| `sentence` | `Array<string>` | N/A                           | Yes      | Tokens for analysis   | Range: 2~20 tokens                    |
+| Field      | Type            | Options                              | Required | Description                                | Constraints                                  |
+| ---------- | --------------- | ------------------------------------ | -------- | ------------------------------------------ | -------------------------------------------- |
+| `model`    | `string`        | `primary`, `primary-ft`, `fast-ft` | Yes      | Analysis model key (provider model alias) | One of: `primary`, `primary-ft`, `fast-ft` |
+| `sentence` | `Array<string>` | N/A                                  | Yes      | Tokens for analysis                        | Range: 2~20 tokens                           |
 
 > Example Request
 
 ```json
 {
-  "model": "gpt-4o-mini-ft",
+  "model": "fast-ft",
   "sentence": ["My", "name", "is", "John", "."]
 }
 ```
+
+#### Quota Consumption
+
+- `model=primary`: 2 analysis credits
+- `model=primary-ft`: 2 analysis credits
+- `model=fast-ft`: 1 analysis credit
 
 #### Response
 
