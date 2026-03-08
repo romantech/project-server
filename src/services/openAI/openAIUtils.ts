@@ -36,7 +36,8 @@ const strategies: RepairStrategy[] = [
     execute: async (json) => {
       const jsonOutputLLM = createJSONChatOpenAI({
         temperature: 0,
-        model: AI_MODEL[AIModelKey.GPT_4O_MINI],
+        model: AI_MODEL[AIModelKey.FAST],
+        reasoning: { effort: 'minimal' },
       });
 
       const prompt = [
