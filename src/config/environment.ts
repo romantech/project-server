@@ -21,10 +21,10 @@ export enum OptionalEnv {
   REDIS_PASSWORD = 'REDIS_PASSWORD',
   REDIS_USERNAME = 'REDIS_USERNAME',
 
-  MODEL_PRIMARY = 'MODEL_PRIMARY',
   MODEL_FAST = 'MODEL_FAST',
-  MODEL_PRIMARY_FT = 'MODEL_PRIMARY_FT',
+  MODEL_PRIMARY = 'MODEL_PRIMARY',
   MODEL_FAST_FT = 'MODEL_FAST_FT',
+  MODEL_PRIMARY_FT = 'MODEL_PRIMARY_FT',
 }
 
 const loadEnvironment = () => {
@@ -43,10 +43,10 @@ const loadEnvironment = () => {
       username: env[OptionalEnv.REDIS_USERNAME],
     },
     models: {
-      PRIMARY: env[OptionalEnv.MODEL_PRIMARY],
       FAST: env[OptionalEnv.MODEL_FAST],
-      PRIMARY_FT: env[OptionalEnv.MODEL_PRIMARY_FT],
+      PRIMARY: env[OptionalEnv.MODEL_PRIMARY],
       FAST_FT: env[OptionalEnv.MODEL_FAST_FT],
+      PRIMARY_FT: env[OptionalEnv.MODEL_PRIMARY_FT],
     },
   } as const;
 };

@@ -8,17 +8,17 @@ const FINE_TUNE_SUFFIX = '_fine_tuned';
 
 /** 클라이언트 요청과 일치 */
 export enum AIModelKey {
-  PRIMARY = 'primary',
   FAST = 'fast',
-  PRIMARY_FT = 'primary-ft',
+  PRIMARY = 'primary',
   FAST_FT = 'fast-ft',
+  PRIMARY_FT = 'primary-ft',
 }
 
 export const AI_MODEL = {
-  [AIModelKey.PRIMARY]: envConfig.models.PRIMARY,
   [AIModelKey.FAST]: envConfig.models.FAST,
-  [AIModelKey.PRIMARY_FT]: envConfig.models.PRIMARY_FT,
+  [AIModelKey.PRIMARY]: envConfig.models.PRIMARY,
   [AIModelKey.FAST_FT]: envConfig.models.FAST_FT,
+  [AIModelKey.PRIMARY_FT]: envConfig.models.PRIMARY_FT,
 } as const;
 
 export const ANALYSIS_MODEL_OPTION = {
