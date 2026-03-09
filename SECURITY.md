@@ -2,17 +2,21 @@
 
 This is a personal, single-maintainer project. Security support is best effort.
 
-## Supported Version
+## Supported Versions
 
-Only the latest `main` branch is supported for security fixes.
+- Supported targets: latest `main` and the latest tagged release.
+- Older tags/commits are not patched in place.
+- Security fixes are published as a new patch release tag. If you consume
+  releases, upgrade to the latest tag.
 
 ## Reporting a Vulnerability
 
 Please use GitHub's private vulnerability reporting feature in the repository
 Security tab.
 
-If private reporting is unavailable, open a public issue with `[security]` in
-the title and do not include exploit details or sensitive data.
+If private reporting is unavailable, do not open a public vulnerability report.
+Instead, open a minimal issue titled `[security] private contact requested` with
+no technical details so a private channel can be arranged.
 
 ## Response Expectations
 
