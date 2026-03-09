@@ -1,21 +1,24 @@
 # Security Policy
 
+This is a personal, single-maintainer project. Security support is best effort.
+
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
-
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+- Supported targets: latest `main` and the latest tagged release.
+- Older tags/commits are not patched in place.
+- Security fixes are published as a new patch release tag. If you consume
+  releases, upgrade to the latest tag.
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+Please use GitHub's private vulnerability reporting feature in the repository
+Security tab.
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+If private reporting is unavailable, do not open a public vulnerability report.
+Instead, open a minimal issue titled `[security] private contact requested` with
+no technical details so a private channel can be arranged.
+
+## Response Expectations
+
+- Initial acknowledgement: within 7 days (best effort)
+- Fix timeline: no guaranteed SLA
