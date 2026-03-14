@@ -1,25 +1,26 @@
+import { HumanMessage, SystemMessage } from '@langchain/core/messages';
+import { StringOutputParser } from '@langchain/core/output_parsers';
 import { ANALYSIS_DECREMENT_COUNT, ERROR_MESSAGES } from '@/constants';
-import { asyncHandler, throwCustomError } from '@/utils';
+import { handleValidationErrors } from '@/middlewares/handleValidationErrors';
+import { validateAnalysisCount } from '@/middlewares/validateAnalysisCount';
 import {
   ANALYSIS_MODEL_OPTION,
-  AnalysisModel,
   ANALYZER_REDIS_SCHEMA,
+  type AnalysisModel,
   createJSONChatOpenAI,
   decrementRedisCounters,
   redis,
   validateAndRepairJSON,
 } from '@/services';
+import { asyncHandler, throwCustomError } from '@/utils';
 import { checkModelField, checkSentenceField } from '@/validators';
-import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
-import { HumanMessage, SystemMessage } from '@langchain/core/messages';
-import { StringOutputParser } from '@langchain/core/output_parsers';
 
 interface RequestBody {
   sentence: string[];
   model: AnalysisModel;
 }
 
-const { RETRIEVE_FAILED } = ERROR_MESSAGES;
+const { IP_UNIDENTIFIABLE, RETRIEVE_FAILED } = ERROR_MESSAGES;
 const { KEYS, FIELDS } = ANALYZER_REDIS_SCHEMA;
 
 export const createAnalysis = [
@@ -28,7 +29,7 @@ export const createAnalysis = [
   validateAnalysisCount,
   handleValidationErrors,
   asyncHandler(async (req, res) => {
-    const clientIP = req.clientIP!; // validateClientIP 미들웨어에서 검증하므로 항상 존재
+    const clientIP = req.clientIP ?? throwCustomError(IP_UNIDENTIFIABLE, 400);
     const { sentence, model }: RequestBody = req.body;
 
     const analysis = await executeAnalysis(JSON.stringify(sentence), model);

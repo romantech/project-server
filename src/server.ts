@@ -1,8 +1,8 @@
-import { setupRoutes } from '@/routes';
 import { createServer, envConfig, logger } from '@/config';
-import { initRedisKeys, redis } from '@/services';
 import { errorHandler, notFoundHandler } from '@/middlewares';
+import { setupRoutes } from '@/routes';
 import { initSchedulers } from '@/schedulers';
+import { initRedisKeys, redis } from '@/services';
 import { checkEnvVariables } from '@/utils';
 
 /**

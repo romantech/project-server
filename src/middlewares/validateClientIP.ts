@@ -1,7 +1,7 @@
-import { RequestHandler } from 'express';
+import type { RequestHandler } from 'express';
 import requestIP from 'request-ip';
-import { throwCustomError } from '@/utils';
 import { ERROR_MESSAGES } from '@/constants';
+import { throwCustomError } from '@/utils';
 
 export const validateClientIP: RequestHandler = (req, _res, next) => {
   const IP = requestIP.getClientIp(req);

@@ -1,26 +1,27 @@
-import { asyncHandler, throwCustomError } from '@/utils';
-import { ParamsDictionary } from 'express-serve-static-core';
+import { ChatPromptTemplate } from '@langchain/core/prompts';
+import { ChatOpenAI } from '@langchain/openai';
+import type { ParamsDictionary } from 'express-serve-static-core';
+import {
+  ERROR_MESSAGES,
+  type RandomSentenceParams,
+  sentencesSchema,
+} from '@/constants';
+import { handleValidationErrors } from '@/middlewares/handleValidationErrors';
+import { validateAnalysisCount } from '@/middlewares/validateAnalysisCount';
 import {
   ANALYZER_REDIS_SCHEMA,
   decrementRedisCounters,
   RANDOM_SENTENCE_CONFIG,
   redis,
 } from '@/services';
-import {
-  ERROR_MESSAGES,
-  RandomSentenceParams,
-  sentencesSchema,
-} from '@/constants';
+import { asyncHandler, throwCustomError } from '@/utils';
 import {
   checkMaxCharField,
   checkSentenceCountField,
   checkTopicsField,
 } from '@/validators';
-import { handleValidationErrors, validateAnalysisCount } from '@/middlewares';
-import { ChatPromptTemplate } from '@langchain/core/prompts';
-import { ChatOpenAI } from '@langchain/openai';
 
-const { RETRIEVE_FAILED } = ERROR_MESSAGES;
+const { IP_UNIDENTIFIABLE, RETRIEVE_FAILED } = ERROR_MESSAGES;
 const { KEYS, FIELDS } = ANALYZER_REDIS_SCHEMA;
 const DECREMENT_COUNT = 1;
 
@@ -32,8 +33,7 @@ export const getRandomSentences = [
   handleValidationErrors,
   asyncHandler<ParamsDictionary, unknown, unknown, RandomSentenceParams>(
     async (req, res) => {
-      const clientIP = req.clientIP!; // validateClientIP 미들웨어에서 검증하므로 항상 존재
-
+      const clientIP = req.clientIP ?? throwCustomError(IP_UNIDENTIFIABLE, 400);
       const sentences = await generateRandomSentences(req.query);
 
       await decrementRedisCounters(

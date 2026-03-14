@@ -1,9 +1,9 @@
-import { logger } from '@/config';
-import { ChatOpenAI, ChatOpenAIFields } from '@langchain/openai';
-import { throwCustomError } from '@/utils/customError';
-import { AI_MODEL, AIModelKey } from '@/services';
 import { JsonOutputParser } from '@langchain/core/output_parsers';
+import { ChatOpenAI, type ChatOpenAIFields } from '@langchain/openai';
 import { jsonrepair } from 'jsonrepair';
+import { logger } from '@/config';
+import { AI_MODEL, AIModelKey } from '@/services';
+import { throwCustomError } from '@/utils/customError';
 
 export const jsonOutputParser = new JsonOutputParser();
 

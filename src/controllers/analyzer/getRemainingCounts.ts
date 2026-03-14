@@ -1,21 +1,22 @@
+import { ERROR_MESSAGES } from '@/constants';
+import { validateClientIP } from '@/middlewares/validateClientIP';
 import {
   ANALYZER_INIT_COUNTS,
   ANALYZER_KEY_EXP,
   ANALYZER_REDIS_SCHEMA,
-  AnalyzerFieldType,
+  type AnalyzerFieldType,
   redis,
 } from '@/services';
 import { asyncHandler, throwCustomError } from '@/utils';
-import { validateClientIP } from '@/middlewares';
 
 const { ANALYSIS, RANDOM_SENTENCE } = ANALYZER_INIT_COUNTS;
+const { IP_UNIDENTIFIABLE } = ERROR_MESSAGES;
 const { KEYS, FIELDS } = ANALYZER_REDIS_SCHEMA;
 
 export const getRemainingCounts = [
   validateClientIP,
   asyncHandler(async (req, res) => {
-    const clientIP = req.clientIP!; // validateClientIP 미들웨어에서 검증하므로 항상 존재
-
+    const clientIP = req.clientIP ?? throwCustomError(IP_UNIDENTIFIABLE, 400);
     const total = await getTotalCounts(KEYS.REMAINING.TOTAL);
     const userTotal = await getCountsByIP(clientIP, total);
 

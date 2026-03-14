@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { ParamsDictionary, Query } from 'express-serve-static-core';
+import type { NextFunction, Request, RequestHandler, Response } from 'express';
+import type { ParamsDictionary, Query } from 'express-serve-static-core';
 
 type AsyncRequestHandler<
   P = ParamsDictionary,
@@ -11,7 +10,7 @@ type AsyncRequestHandler<
   req: Request<P, ResBody, ReqBody, ReqQuery>,
   res: Response<ResBody>,
   next: NextFunction,
-) => Promise<Response | void>;
+) => Promise<Response<ResBody> | void>;
 
 export const asyncHandler = <
   P = ParamsDictionary,

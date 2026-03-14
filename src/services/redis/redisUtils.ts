@@ -11,6 +11,8 @@ export const decrementRedisCounters = async (
    * 이를 통해 모든 연산이 성공적으로 이뤄져야만 전체 작업을 확정(커밋)할 수 있음
    * */
   const multi = redis.multi();
-  keys.forEach((key) => multi.hincrby(key, fieldName, -decValue));
+  keys.forEach((key) => {
+    multi.hincrby(key, fieldName, -decValue);
+  });
   await multi.exec();
 };

@@ -1,8 +1,8 @@
-import { Application } from 'express';
-import { healthRouter } from './health';
-import { analyzerRouter } from './analyzer';
+import type { Application } from 'express';
 import { ignoreFavicon } from '@/middlewares';
 import { robotsRouter } from '@/routes/robots';
+import { analyzerRouter } from './analyzer';
+import { healthRouter } from './health';
 
 export const setupRoutes = (app: Application) => {
   app.use(ignoreFavicon);
