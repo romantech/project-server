@@ -1,5 +1,5 @@
-import { analyzerController } from '@/controllers';
 import { Router } from 'express';
+import { analyzerController } from '@/controllers';
 
 export enum AnalyzerRoute {
   ANALYSIS = '/',

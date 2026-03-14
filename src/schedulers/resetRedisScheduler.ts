@@ -1,6 +1,6 @@
-import { ANALYZER_INIT_COUNTS, ANALYZER_REDIS_SCHEMA, redis } from '@/services';
 import schedule from 'node-schedule';
 import { logger } from '@/config';
+import { ANALYZER_INIT_COUNTS, ANALYZER_REDIS_SCHEMA, redis } from '@/services';
 
 /** Koyeb 서버는 UTC 기준이므로 한국 시간(UTC+9) 00시는 '0 15 * * *'로 설정 */
 const KST_MIDNIGHT = '0 15 * * *';

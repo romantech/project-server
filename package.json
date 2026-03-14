@@ -11,6 +11,9 @@
     "start:dev": "tsnd -r dotenv/config -r tsconfig-paths/register --respawn --transpile-only src/server.ts",
     "start": "node -r module-alias/register dist/server.js",
     "build": "tsc",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "type-check": "tsc --noEmit"
   },
@@ -43,7 +46,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.3",
+    "@biomejs/biome": "2.4.7",
     "@types/compression": "^1.8.1",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
@@ -54,15 +57,8 @@
     "@types/node": "^22.19.13",
     "@types/node-schedule": "^2.1.8",
     "dotenv": "^16.6.1",
-    "eslint": "^9.39.3",
-    "eslint-config-prettier": "^9.1.2",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-prettier": "^5.5.5",
-    "globals": "^15.15.0",
-    "prettier": "^3.8.1",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.1"
+    "typescript": "^5.9.3"
   }
 }

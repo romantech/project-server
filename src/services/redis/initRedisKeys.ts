@@ -1,4 +1,4 @@
-import Redis from 'ioredis';
+import type Redis from 'ioredis';
 import { ANALYZER_INIT_COUNTS, ANALYZER_REDIS_SCHEMA } from '@/services';
 
 const analyzerCountKeys = async (redis: Redis) => {

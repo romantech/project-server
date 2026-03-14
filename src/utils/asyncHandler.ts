@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { ParamsDictionary, Query } from 'express-serve-static-core';
+import type { NextFunction, Request, RequestHandler, Response } from 'express';
+import type { ParamsDictionary, Query } from 'express-serve-static-core';
 
 type AsyncRequestHandler<
   P = ParamsDictionary,

@@ -1,9 +1,9 @@
-import { createLogger, format, transports } from 'winston';
-import winstonDaily, {
-  DailyRotateFileTransportOptions,
-} from 'winston-daily-rotate-file';
 import path from 'node:path';
 import { cwd } from 'node:process';
+import { createLogger, format, transports } from 'winston';
+import winstonDaily, {
+  type DailyRotateFileTransportOptions,
+} from 'winston-daily-rotate-file';
 
 const { combine, timestamp, colorize, printf } = format;
 const logDir = path.join(cwd(), 'logs');

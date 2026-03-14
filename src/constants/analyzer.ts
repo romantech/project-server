@@ -1,6 +1,6 @@
-import { AIModelKey } from '@/services';
+import type { Query } from 'express-serve-static-core';
 import { z } from 'zod';
-import { Query } from 'express-serve-static-core';
+import { AIModelKey } from '@/services';
 
 export const ANALYSIS_DECREMENT_COUNT = {
   [AIModelKey.FAST]: 1,

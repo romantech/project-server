@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express';
+import type { RequestHandler } from 'express';
 import { validationResult } from 'express-validator';
 
 /** express-validator 유효성 검사시 사용할 에러 핸들러 */

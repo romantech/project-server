@@ -1,6 +1,6 @@
+import type { ChatOpenAIFields } from '@langchain/openai';
 import { envConfig } from '@/config';
 import { ANALYZER_REDIS_SCHEMA } from '@/services/redis';
-import { ChatOpenAIFields } from '@langchain/openai';
 
 const { FIELDS } = ANALYZER_REDIS_SCHEMA;
 

@@ -1,9 +1,9 @@
+import compression from 'compression';
+import cookieParser from 'cookie-parser';
+import cors, { type CorsOptions } from 'cors';
 import express, { type Application } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import compression from 'compression';
-import cookieParser from 'cookie-parser';
-import cors, { CorsOptions } from 'cors';
 import { envConfig } from '@/config/environment';
 
 const morganFormat = envConfig.isProd ? 'combined' : 'dev';

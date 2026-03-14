@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 const robotsRouter = Router();
 
-robotsRouter.get('/robots.txt', (req, res, _next) => {
+robotsRouter.get('/robots.txt', (_req, res, _next) => {
   res.type('text/plain');
   /*
    * User-agent: * (모든 웹 크롤러를 대상으로 함, 예: Googlebot, Bingbot 등)

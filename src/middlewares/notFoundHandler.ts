@@ -1,6 +1,6 @@
-import { throwCustomError } from '@/utils';
+import type { RequestHandler } from 'express';
 import { ERROR_MESSAGES } from '@/constants';
-import { RequestHandler } from 'express';
+import { throwCustomError } from '@/utils';
 
 export const notFoundHandler: RequestHandler = (req, _res, _next) => {
   const { originalUrl } = req;
