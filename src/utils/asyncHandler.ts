@@ -10,7 +10,7 @@ type AsyncRequestHandler<
   req: Request<P, ResBody, ReqBody, ReqQuery>,
   res: Response<ResBody>,
   next: NextFunction,
-) => Promise<Response | void>;
+) => Promise<Response<ResBody> | void>;
 
 export const asyncHandler = <
   P = ParamsDictionary,
