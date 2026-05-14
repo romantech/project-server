@@ -704,8 +704,8 @@ packages:
     peerDependencies:
       '@langchain/core': ^1.1.32
 
-  langsmith@0.5.20:
-    resolution: {integrity: sha512-ULhLM8RswvQDXufLtNtvclHrWCBx8Cb5UPI6lAZC+8Dq59iHsVPz/3Ac9khWNm1VIvChRsuykixD/WrmzuuA3Q==}
+  langsmith@0.6.1:
+    resolution: {integrity: sha512-qNBNPRFqScIlGaPGfMrxhw/GTOL4GJKMp1P4jeA3xuI+Gkj5Ei3wvOtxpYaZMTeBbXTW3yi4n4Wf3nCgogvttg==}
     peerDependencies:
       '@opentelemetry/api': '*'
       '@opentelemetry/exporter-trace-otlp-proto': '*'
@@ -1106,6 +1106,7 @@ packages:
 
   uuid@10.0.0:
     resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   uuid@11.1.0:
@@ -1225,7 +1226,7 @@ snapshots:
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.21
-      langsmith: 0.5.20(openai@6.29.0(zod@4.3.6))
+      langsmith: 0.6.1(openai@6.29.0(zod@4.3.6))
       mustache: 4.2.0
       p-queue: 6.6.2
       uuid: 11.1.0
@@ -1756,7 +1757,7 @@ snapshots:
       '@langchain/core': 1.1.32(openai@6.29.0(zod@4.3.6))
       '@langchain/langgraph': 1.2.2(@langchain/core@1.1.32(openai@6.29.0(zod@4.3.6)))(zod@4.3.6)
       '@langchain/langgraph-checkpoint': 1.0.0(@langchain/core@1.1.32(openai@6.29.0(zod@4.3.6)))
-      langsmith: 0.5.20(openai@6.29.0(zod@4.3.6))
+      langsmith: 0.6.1(openai@6.29.0(zod@4.3.6))
       uuid: 11.1.0
       zod: 4.3.6
     transitivePeerDependencies:
@@ -1772,10 +1773,9 @@ snapshots:
       - ws
       - zod-to-json-schema
 
-  langsmith@0.5.20(openai@6.29.0(zod@4.3.6)):
+  langsmith@0.6.1(openai@6.29.0(zod@4.3.6)):
     dependencies:
       p-queue: 6.6.2
-      uuid: 10.0.0
     optionalDependencies:
       openai: 6.29.0(zod@4.3.6)
 
