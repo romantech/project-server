@@ -42,7 +42,7 @@ export const ANALYSIS_MODEL_OPTION = {
 export const RANDOM_SENTENCE_CONFIG = {
   temperature: 1,
   model: AI_MODEL[AIModelKey.FAST],
-  reasoning: { effort: 'minimal' },
+  reasoning: { effort: 'low' },
 } satisfies ChatOpenAIFields;
 
 export const ANALYSIS_MODEL = Object.keys(ANALYSIS_MODEL_OPTION);
