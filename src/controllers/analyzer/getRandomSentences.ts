@@ -1,6 +1,6 @@
 import { ChatPromptTemplate } from '@langchain/core/prompts';
 import { ChatOpenAI } from '@langchain/openai';
-import type { ParamsDictionary } from 'express-serve-static-core';
+import { matchedData } from 'express-validator';
 import {
   ERROR_MESSAGES,
   type RandomSentenceParams,
@@ -31,20 +31,20 @@ export const getRandomSentences = [
   checkSentenceCountField,
   validateAnalysisCount,
   handleValidationErrors,
-  asyncHandler<ParamsDictionary, unknown, unknown, RandomSentenceParams>(
-    async (req, res) => {
-      const clientIP = req.clientIP ?? throwCustomError(IP_UNIDENTIFIABLE, 400);
-      const sentences = await generateRandomSentences(req.query);
+  asyncHandler(async (req, res) => {
+    const clientIP = req.clientIP ?? throwCustomError(IP_UNIDENTIFIABLE, 400);
+    const sentences = await generateRandomSentences(
+      matchedData<RandomSentenceParams>(req),
+    );
 
-      await decrementRedisCounters(
-        [KEYS.REMAINING.TOTAL, KEYS.REMAINING.USER(clientIP)],
-        FIELDS.RANDOM_SENTENCE,
-        DECREMENT_COUNT,
-      );
+    await decrementRedisCounters(
+      [KEYS.REMAINING.TOTAL, KEYS.REMAINING.USER(clientIP)],
+      FIELDS.RANDOM_SENTENCE,
+      DECREMENT_COUNT,
+    );
 
-      res.status(200).json(sentences);
-    },
-  ),
+    res.status(200).json(sentences);
+  }),
 ];
 
 const retrieveRandomSentencePrompt = async (query: RandomSentenceParams) => {

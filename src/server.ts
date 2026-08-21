@@ -31,7 +31,8 @@ const initServer = async () => {
   app.use(notFoundHandler);
   app.use(errorHandler);
 
-  app.listen(envConfig.port, () => {
+  app.listen(envConfig.port, (error) => {
+    if (error) throw error;
     logger.info(`Server is running on port ${envConfig.port}`);
   });
 };

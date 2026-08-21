@@ -2,6 +2,7 @@ import Redis from 'ioredis';
 import { envConfig, logger } from '@/config';
 
 export const redis = new Redis({
+  protocol: 2,
   host: envConfig.redis.host,
   port: envConfig.redis.port,
   username: envConfig.redis.username,
