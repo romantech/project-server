@@ -32,6 +32,7 @@ const corsOptions: CorsOptions = {
 
 export const createServer = (): Application => {
   const app = express();
+  app.set('query parser', 'extended');
 
   /**
    * Helmet 라이브러리를 이용해 보안 관련 HTTP 헤더 자동 설정

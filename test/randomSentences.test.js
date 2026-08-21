@@ -2,11 +2,12 @@ require('module-alias/register');
 
 const assert = require('node:assert/strict');
 const { test } = require('node:test');
-const express = require('express');
+const { createServer } = require('../dist/config/createServer');
 
 const servicesPath = require.resolve('../dist/services');
 const openAIPath = require.resolve('@langchain/openai');
 let llmCalls = 0;
+let llmPrompt = '';
 
 require.cache[servicesPath] = {
   exports: {
@@ -37,8 +38,9 @@ require.cache[openAIPath] = {
     ChatOpenAI: class {
       withStructuredOutput() {
         return {
-          invoke: async () => {
+          invoke: async (prompt) => {
             llmCalls += 1;
+            llmPrompt = prompt.toString();
             return { sentences: ['Generated sentence.'] };
           },
         };
@@ -51,10 +53,10 @@ const {
   getRandomSentences,
 } = require('../dist/controllers/analyzer/getRandomSentences');
 
-test('uses sanitized defaults for omitted query parameters', async (context) => {
+test('uses sanitized defaults and bracketed topic arrays', async (context) => {
   const [maxChars, topics, sentenceCount, , validationErrors, handler] =
     getRandomSentences;
-  const app = express();
+  const app = createServer();
   app.get(
     '/analyzer/random-sentences',
     maxChars,
@@ -82,10 +84,12 @@ test('uses sanitized defaults for omitted query parameters', async (context) => 
   const address = server.address();
   assert(address && typeof address !== 'string');
   const response = await fetch(
-    `http://127.0.0.1:${address.port}/analyzer/random-sentences?sent_count=3`,
+    `http://127.0.0.1:${address.port}/analyzer/random-sentences?sent_count=3&topics%5B%5D=sports&topics%5B%5D=travel`,
   );
 
   assert.equal(response.status, 200);
   assert.deepEqual(await response.json(), ['Generated sentence.']);
   assert.equal(llmCalls, 1);
+  assert.match(llmPrompt, /sports/);
+  assert.match(llmPrompt, /travel/);
 });
