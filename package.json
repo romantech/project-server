@@ -37,7 +37,7 @@
     "jsonrepair": "^3.15.0",
     "langchain": "^1.5.8",
     "module-alias": "^2.3.4",
-    "morgan": "^1.11.0",
+    "morgan": "^1.12.1",
     "node-schedule": "^2.1.1",
     "openai": "^7.4.0",
     "request-ip": "^3.3.0",
